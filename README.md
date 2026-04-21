@@ -21,7 +21,20 @@
 
 ## Game description
 
-**[Game title]** is **[one-sentence pitch — e.g. a 3D lane-style tactics game where you spawn units into lanes and defend your base]**.
+**[Game title]** is a 3D lane-based strategy game where the player manages their troops in the lane. Taking reference to an ARAM-style gameplay and theme from League of Legends, the goal is to deploy troops to push down the lane and destroy the enemy base located on the opposite end, while protecting your own base in the process. 
+The main mechanic involves managing the player's currency and deploying troops in an effective manner. The player will passively generate currency with the possibility of upgrading it over time, while also being able to obtain currency from defeating enemy troops and objectives. Through the usage of the currency, the player will be able to place troops anywhere in a designated area in front of their base that will follow a set path towards the enemy base. When units encounter an opposing unit within their field of range, they will lock onto the target and close the distance to enter attack range using AI logic. In the case where the unit in sight is defeated or no longer in range of sight, the troop will continue down its original path towards the enemy base. The player wins when they destroy the enemy base, but will lose if the enemy manages to destroy the player's base first. 
+Current allied unit designs include:
+  - Tank, high health, high target dmg, slow atk spd, short atk range
+  - Basic soldier, balanced stats, short atk range
+  - Archer, long-ranged atks, lower dmg and hp
+  - Assassin, untargetable until initiating combat, still damageable from aoe even when untargetable
+For enemy units:
+  - Lower-tier soldier, weaker stats all around but more frequent
+  - Tank, high health, average aoe dmg, slow atk spd, short atk range
+  - Air unit, targetable only by ranged atks, swift, low hp
+The elements in class we plan to incorporate include AI behavior and possibly shaders for a ground design. The core gameplay is what we hope to achieve, but the troops and certain mechanics are not yet set in stone.
+
+**[one-sentence pitch — e.g. a 3D lane-style tactics game where you spawn units into lanes and defend your base]**.
 
 **Gameplay.** **[Paragraph: what the player does moment-to-moment — spawning, lane choice, combat, towers, etc.]**
 
