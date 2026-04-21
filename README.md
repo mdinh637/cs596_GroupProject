@@ -17,6 +17,7 @@
 | Contributor | Role |
 |------------|------|
 | **Laura Wetherhold / FluffShady** | **Character import, humanoid animation setup, waypoint prototype + docs** |
+| **Michael Dinh** | **Implementing ally troop and enemy logic, troop placement, combat system** |
 
 ## Game description
 
