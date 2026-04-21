@@ -8,7 +8,11 @@ Checklist for the check-in demo (import → animate → `WaypointMover` → shor
 
 From `KayKit_Adventurers_2.0_FREE` on your PC, copy into the repo under something like:
 
-`Assets/Art/KayKit_Adventurers/`
+`Assets/Art/KayKit_Adventurers/` with subfolders:
+- `Models/Characters/`
+- `AnimatorControllers/`
+- `Textures/`
+- `Animations/`
 
 **Character (pick one):**
 
@@ -116,7 +120,7 @@ Capture the **Game** view (or full screen Play). Show: character walks from A to
 
 **Five bullets you can paste (edit names if you used another class):**
 
-1. Copied KayKit `Knight.fbx` + `knight_texture.png` and Rig_Medium animation FBX files into `Assets/Art/KayKit_Adventurers/`.
+1. Copied KayKit assets into `Assets/Art/KayKit_Adventurers/` subfolders (`Models/Characters`, `Textures`, `Animations`, and `AnimatorControllers`).
 2. Set the character to **Humanoid** rig and animation FBX files to **Humanoid** with **Copy From Other Avatar** (Knight), with **Loop Time** on idle/walk clips.
 3. Built a small **Animator Controller** with **Idle** / **Walk** states and a float **Speed** parameter for transitions.
 4. Placed two empty transforms **Waypoint_A** and **Waypoint_B**, attached **`WaypointMover`** to the character root, and assigned the Animator so **Speed** drives walk while moving.
