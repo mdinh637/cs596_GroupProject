@@ -8,7 +8,7 @@
 
 | Member | Role |
 |--------|------|
-| **[Name]** | **[Short role — e.g. enemy wave logic and combat balancing]** |
+| **[Husain Patanwala]** | **[Asset research / game concept design / tower upgrade system + projectile mechanics]** |
 | **[Name]** | **[...]** |
 | **[Name]** | **[...]** |
 | **[Name]** | **[...]** |
@@ -21,7 +21,7 @@
 
 ## Game description
 
-**[Game title]** is a 3D lane-based strategy game where the player manages their troops in the lane. Taking reference to an ARAM-style gameplay and theme from League of Legends, the goal is to deploy troops to push down the lane and destroy the enemy base located on the opposite end, while protecting your own base in the process. 
+**[Crusader?]** is a 3D lane-based strategy game where the player manages their troops in the lane. Taking reference to an ARAM-style gameplay and theme from League of Legends, the goal is to deploy troops to push down the lane and destroy the enemy base located on the opposite end, while protecting your own base in the process. 
 The main mechanic involves managing the player's currency and deploying troops in an effective manner. The player will passively generate currency with the possibility of upgrading it over time, while also being able to obtain currency from defeating enemy troops and objectives. Through the usage of the currency, the player will be able to place troops anywhere in a designated area in front of their base that will follow a set path towards the enemy base. When units encounter an opposing unit within their field of range, they will lock onto the target and close the distance to enter attack range using AI logic. In the case where the unit in sight is defeated or no longer in range of sight, the troop will continue down its original path towards the enemy base. The player wins when they destroy the enemy base, but will lose if the enemy manages to destroy the player's base first. 
 Current allied unit designs include:
   - Tank, high health, high target dmg, slow atk spd, short atk range
