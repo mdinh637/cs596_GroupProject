@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LaunchProjectile : MonoBehaviour
+public class FireProjectile : MonoBehaviour
 {
     void Update()
     {
