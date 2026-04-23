@@ -1,11 +1,8 @@
-# cs596 Group Project
+# CS596 Group Project
 
-## Group name
+## Group name: 5Stack
 
-**5Stack**
-
-## Game Name
-**Battle Knights**
+## Game Name: Battle Knights
 
 ## Members and roles
 
@@ -21,7 +18,9 @@
 
 **[Battle Knights]** is a 3D lane-based strategy game where the player manages their troops in the lane. Taking reference to an ARAM-style gameplay and theme from League of Legends, the goal is to deploy troops to push down the lane and destroy the enemy base located on the opposite end, while protecting your own base in the process. 
 
-The main mechanic involves managing the player's currency and deploying troops in an effective manner. The player will passively generate currency with the possibility of upgrading it over time, while also being able to obtain currency from defeating enemy troops and objectives. Through the usage of the currency, the player will be able to place troops anywhere in a designated area in front of their base that will follow a set path towards the enemy base. When units encounter an opposing unit within their field of range, they will lock onto the target and close the distance to enter attack range using AI logic. In the case where the unit in sight is defeated or no longer in range of sight, the troop will continue down its original path towards the enemy base. The player wins when they destroy the enemy base, but will lose if the enemy manages to destroy the player's base first. 
+The main mechanic involves managing the player's currency and deploying troops in an effective manner. The player will passively generate currency with the possibility of upgrading it over time, while also being able to obtain currency from defeating enemy troops and objectives. 
+
+Through the usage of the currency, the player will be able to place troops anywhere in a designated area in front of their base that will follow a set path towards the enemy base. When units encounter an opposing unit within their field of range, they will lock onto the target and close the distance to enter attack range using AI logic. In the case where the unit in sight is defeated or no longer in range of sight, the troop will continue down its original path towards the enemy base. The player wins when they destroy the enemy base, but will lose if the enemy manages to destroy the player's base first. 
 
 ### Graphics
 In order to focus on gameplay, we chose to search for open source, free 3d assets to enhance the visual aspect of the game. Decided to use assets mainly from KayKit developer on itch.io. 
@@ -43,7 +42,7 @@ For enemy units:
 The elements in class we plan to incorporate include AI behavior and possibly shaders for a ground design. The core gameplay is what we hope to achieve, but the troops and certain mechanics are not yet set in stone.
 
 ### Fun factor
-
+This game is a mix of ARAM, tower defense, and strategy. The player will have to decide what to spend their experience points on: unlocking new characters/troops, upgrading tower efficacy, or other upgrades. Also during the battle itself they have to actively think and and deal with different enemy combos sent at them.
 
 ## Gameplay 
 
