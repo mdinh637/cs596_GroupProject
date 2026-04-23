@@ -7,24 +7,38 @@ public class FireProjectile : MonoBehaviour
     public Transform m_launchPoint;
     public float m_speed = 1f;
 
-    [Header("Raycast Projectile Targeting")]
+    [Header("Raycast Targeting")]
     private float m_raycastMaxDistance = 500f;
     /*this all layers is just for testing purposes
      but in practice this isn't what we want. 
      we need to specifically mask everything but ground so our 
      ray doesn't get short by hitting enemies or friendlies*/
     private LayerMask m_raycastLayers = Physics.AllLayers;
+    private float m_currMaxFiringRange = 12f;
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        /*if (Input.GetMouseButtonDown(0))
         {
             if (m_projectile == null) { return; }
 
             Transform spawn = m_launchPoint != null ? m_launchPoint : transform;
             Rigidbody p = Instantiate(m_projectile, spawn.position, spawn.rotation);
             p.linearVelocity = spawn.forward * m_speed;
-        }
+        }*/
+    
+    
+        /*If we haven't clicked and we are not in range then don't fire*/
+        if (!Input.GetMouseButtonDown(0) 
+            && m_projectile == null 
+            && !TryGetMouseWorldPoint(out Vector3 targetPoint) 
+            && !TargetInRange(targetPoint, out float flatDistance)) { return; }
+
+        Transform spawn = m_launchPoint != null ? m_launchPoint : transform;
+        Rigidbody p = Instantiate(m_projectile, spawn.position, spawn.rotation);
+        p.linearVelocity = spawn.forward * m_speed;
+
+
     }
 
     /*out means that var must be assigned before function returns*/
@@ -40,10 +54,23 @@ public class FireProjectile : MonoBehaviour
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
         /*raycast needs to ignore other colliders so we just check for dist to ground point we want*/
-        if (!Physics.Raycast(ray, out RaycastHit hit, 1000f, ~0, QueryTriggerInteraction.Ignore))
+        if (!Physics.Raycast(ray, out RaycastHit hit, m_raycastMaxDistance, m_raycastLayers, QueryTriggerInteraction.Ignore))
             return false;
 
         point = hit.point;
         return true;
     }
+
+    bool TargetInRange(Vector3 targetPoint, out float flatDistance)
+    {
+        Transform spawn = m_launchPoint == null ? transform : m_launchPoint;
+
+        Vector3 delta = targetPoint - spawn.position;
+        /*we just want to deal with the x component by itself*/
+        delta.y = 0f;
+
+        flatDistance = delta.magnitude;
+        return flatDistance <= m_currMaxFiringRange;
+    }
+
 }
