@@ -9,7 +9,7 @@
 | Member | Role |
 |--------|------|
 | **[Husain Patanwala]** | **[Asset research / game concept design / tower upgrade system + projectile mechanics]** |
-| **[Name]** | **[...]** |
+| **[Glory Kanda]** | **[Finds and organizes all sound effects and music.]** |
 | **[Name]** | **[...]** |
 | **[Name]** | **[...]** |
 | **[Name]** | **[...]** |
