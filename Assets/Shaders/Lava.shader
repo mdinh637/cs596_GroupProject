@@ -188,12 +188,25 @@ Shader "Custom/Lava"
                 uv += sin(uv.y * _DistortionScale + t) * _DistortionStrength;
                 //uv += float2(sin(uv.x * _DistortionScale + t), cos(uv.y * _DistortionScale + t)) * _DistortionStrength;
 
+                // Voronoi is cell noise and essentially a mask that well apply to color
                 float voronoiOut = 0.0;
                 float cells = 0.0;
                 Unity_Voronoi_float(uv, t * _AngleSpeed, _VoronoiScale, voronoiOut, cells);
 
+                // Use another noise function to add some more variation to the voronoi output
+                float noise = 0.0;
+                Unity_SimpleNoise_float(uv + t * 0.1, _VoronoiScale, noise);
+                voronoiOut += noise * 0.1;
+
+                // Remap the vornoi value so we can use it in blending lava colors
+                float mask = 1.0 - smoothstep(0.0, _EdgeSoftness * 100, voronoiOut);
+
+                half3 lava = lerp(_DarkColor.rgb, _MidColor.rgb, mask);
+                lava = lerp(lava, _HotColor.rgb, mask * mask * _GlowIntensity);
+
                 // half4 color = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
                 half4 color = half4(voronoiOut, voronoiOut, voronoiOut, 1.0);
+                //half4 color = half4(lava, 1.0);
                 return color;
             }
             ENDHLSL
