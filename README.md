@@ -9,7 +9,7 @@
 | Member | Role |
 |--------|------|
 | **Husain Patanwala** | **Asset research / game concept design / tower+ability upgrade system + projectile mechanics** |
-| **Glory Kanda** | **Finds and organizes all sound effects and music.** |
+| **Glory Kanda** | **Handles playtesting, bug documentation, game balance feedback, and final submission materials.** |
 | **Michael Dinh** | **Implementing ally troop and enemy logic, troop placement, combat system** |
 | **Laura Wetherhold** | **Character import, humanoid animation setup, waypoint prototype + init docs** |
 | **Alejandro Alvarado** | **Enemy tower functionality, HUD and UI** |
