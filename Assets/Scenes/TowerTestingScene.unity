@@ -236,13 +236,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 544481963}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.30070585, y: -0, z: -0, w: 0.953717}
-  m_LocalPosition: {x: 0.001, y: 0.124, z: -0.532}
+  m_LocalRotation: {x: -0.7017509, y: -0, z: -0, w: 0.71242243}
+  m_LocalPosition: {x: 0.0009999275, y: 0.123999596, z: -0.5320004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1405259121}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.135, y: 0, z: 0}
 --- !u!114 &544481965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,9 +255,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831268b121efb7942b1984005b9b2b7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireProjectile
-  projectile: {fileID: 6297721891539101869, guid: 9b48996b780ff294d803acb4510c5fa1, type: 3}
-  launchPoint: {fileID: 544481964}
-  speed: 12
+  m_projectile: {fileID: 6297721891539101869, guid: 9b48996b780ff294d803acb4510c5fa1, type: 3}
+  m_launchPoint: {fileID: 544481964}
+  m_speed: 1
+  m_raycastMaxDistance: 100
+  m_raycastLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_currMaxFiringRange: 12
+  m_lobHeight: 2
 --- !u!1 &1216288203
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,13 +576,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2051688955}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.9961947, z: 0, w: 0.08715578}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.2633581, y: -0.46362105, z: 0.14654133, w: 0.8332009}
+  m_LocalPosition: {x: -0.62, y: 5.88, z: -39.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 180, y: 10, z: 180}
+  m_LocalEulerAnglesHint: {x: 144.919, y: 121.813995, z: 180}
 --- !u!114 &2051688959
 MonoBehaviour:
   m_ObjectHideFlags: 0
