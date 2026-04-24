@@ -1,6 +1,6 @@
 # CS596 Group Project
 
-## Group name: 5Stack
+## Group name: 4Stack
 
 ## Game Name: Battle Knights
 
@@ -11,7 +11,6 @@
 | **Husain Patanwala** | **Asset research / game concept design / tower+ability upgrade system + projectile mechanics** |
 | **Glory Kanda** | **Handles playtesting, bug documentation, game balance feedback, and final submission materials.** |
 | **Michael Dinh** | **Implementing ally troop and enemy logic, troop placement, combat system** |
-| **Laura Wetherhold** | **Character import, humanoid animation setup, waypoint prototype + init docs** |
 | **Alejandro Alvarado** | **Enemy tower functionality, HUD and UI** |
 
 ## Game description
