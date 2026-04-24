@@ -12,7 +12,7 @@
 | **Glory Kanda** | **Finds and organizes all sound effects and music.** |
 | **Michael Dinh** | **Implementing ally troop and enemy logic, troop placement, combat system** |
 | **Laura Wetherhold** | **Character import, humanoid animation setup, waypoint prototype + init docs** |
-| **[Name]** | **[...]** |
+| **Alejandro Alvarado** | **Enemy tower functionality, HUD and UI** |
 
 ## Game description
 
