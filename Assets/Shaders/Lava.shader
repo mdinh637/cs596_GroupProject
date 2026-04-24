@@ -4,6 +4,18 @@ Shader "Custom/Lava"
     {
         [MainColor] _BaseColor("Base Color", Color) = (1, 1, 1, 1)
         [MainTexture] _BaseMap("Base Map", 2D) = "white" {}
+
+         _VoronoiScale("Voronoi Scale", Float) = 6
+        _FlowSpeed("Flow Speed", Float) = 1
+        _DistortionScale("Distortion Scale", Float) = 3
+        _DistortionStrength("Distortion Strength", Float) = 0.15
+        _AngleSpeed("Angle Speed", Float) = 1
+        _EdgeSoftness("Edge Softness", Float) = 0.25
+        _GlowIntensity("Glow Intensity", Float) = 2
+
+        _HotColor("Hot Color", Color) = (1, 1, 0.5, 1)
+        _MidColor("Mid Color", Color) = (1, 0.45, 0, 1)
+        _DarkColor("Dark Color", Color) = (0.2, 0.05, 0, 1)
     }
 
     SubShader
@@ -37,6 +49,18 @@ Shader "Custom/Lava"
             CBUFFER_START(UnityPerMaterial)
                 half4 _BaseColor;
                 float4 _BaseMap_ST;
+
+                float _VoronoiScale;
+                float _FlowSpeed;
+                float _DistortionScale;
+                float _DistortionStrength;
+                float _AngleSpeed;
+                float _EdgeSoftness;
+                float _GlowIntensity;
+
+                half4 _HotColor;
+                half4 _MidColor;
+                half4 _DarkColor;
             CBUFFER_END
 
             // Convention to add helper functions after cbuffer
