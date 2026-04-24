@@ -11,11 +11,29 @@ Shader "Custom/Lava"
         _DistortionStrength("Distortion Strength", Float) = 0.15
         _AngleSpeed("Angle Speed", Float) = 1
         _EdgeSoftness("Edge Softness", Float) = 0.25
-        _GlowIntensity("Glow Intensity", Float) = 2
+        _GlowIntensity("Glow Intensity", Float) = 0.5
 
-        _HotColor("Hot Color", Color) = (1, 1, 0.5, 1)
-        _MidColor("Mid Color", Color) = (1, 0.45, 0, 1)
-        _DarkColor("Dark Color", Color) = (0.2, 0.05, 0, 1)
+        // Lava color options I tried out, feel free to experiment with your own colors!
+
+        // MAT1
+        // _HotColor("Hot Color", Color) = (0.8, 0.8, 0.5, 1)
+        // _MidColor("Mid Color", Color) = (0.5, 0.35, 0, 1)
+        //_DarkColor("Dark Color", Color) = (0.4, 0.05, 0, 1)
+
+        // MAT2
+        // _HotColor("Hot Color", Color) = (1.0, 0.62, 0.12, 1)
+        // _MidColor("Mid Color", Color) = (0.92, 0.34, 0.04, 1)
+        // _DarkColor("Dark Color", Color) = (0.42, 0.15, 0.02, 1)
+
+        // MAT3
+        _HotColor("Hot Color", Color) = (1.0, 0.82, 0.18, 1)
+        _MidColor("Mid Color", Color) = (0.92, 0.48, 0.08, 1)
+        _DarkColor("Dark Color", Color) = (0.55, 0.18, 0.03, 1)
+
+        // MAT4
+        // _HotColor("Hot Color", Color) = (1.0, 0.35, 0.05, 1)
+        // _MidColor("Mid Color", Color) = (0.88, 0.16, 0.02, 1)
+        // _DarkColor("Dark Color", Color) = (0.45, 0.05, 0.01, 1)
     }
 
     SubShader
@@ -196,17 +214,17 @@ Shader "Custom/Lava"
                 // Use another noise function to add some more variation to the voronoi output
                 float noise = 0.0;
                 Unity_SimpleNoise_float(uv + t * 0.1, _VoronoiScale, noise);
-                voronoiOut += noise * 0.1;
+                voronoiOut += noise * 0.5;
 
                 // Remap the vornoi value so we can use it in blending lava colors
-                float mask = 1.0 - smoothstep(0.0, _EdgeSoftness * 100, voronoiOut);
+                float mask = 1.0 - smoothstep(0.0, _EdgeSoftness * 10, voronoiOut);
 
                 half3 lava = lerp(_DarkColor.rgb, _MidColor.rgb, mask);
                 lava = lerp(lava, _HotColor.rgb, mask * mask * _GlowIntensity);
 
                 // half4 color = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
-                half4 color = half4(voronoiOut, voronoiOut, voronoiOut, 1.0);
-                //half4 color = half4(lava, 1.0);
+                //half4 color = half4(voronoiOut, voronoiOut, voronoiOut, 1.0);
+                half4 color = half4(lava, 1.0);
                 return color;
             }
             ENDHLSL
