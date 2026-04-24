@@ -185,7 +185,8 @@ Shader "Custom/Lava"
                 // scale controls wave frequency
                 // strength controls wave height/amplitude 
                 float2 uv = IN.uv;
-                uv += float2(sin(uv.x * _DistortionScale + t), cos(uv.y * _DistortionScale + t)) * _DistortionStrength;
+                uv += sin(uv.y * _DistortionScale + t) * _DistortionStrength;
+                //uv += float2(sin(uv.x * _DistortionScale + t), cos(uv.y * _DistortionScale + t)) * _DistortionStrength;
 
                 float voronoiOut = 0.0;
                 float cells = 0.0;
