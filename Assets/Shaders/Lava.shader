@@ -10,7 +10,7 @@ Shader "Custom/Lava"
         _DistortionScale("Distortion Scale", Float) = 3
         _DistortionStrength("Distortion Strength", Float) = 0.15
         _AngleSpeed("Angle Speed", Float) = 1
-        _EdgeSoftness("Edge Softness", Float) = 0.25
+        _EdgeSoftness("Edge Softness", Float) = 1
         _GlowIntensity("Glow Intensity", Float) = 0.5
 
         // Lava color options I tried out, feel free to experiment with your own colors!
@@ -118,18 +118,6 @@ Shader "Custom/Lava"
             }
 
             // Unity docs also have noise functions we can use 
-            // https://docs.unity3d.com/Packages/com.unity.shadergraph@6.9/manual/Noise-Sine-Wave-Node.html
-
-            void Unity_NoiseSineWave_float4(float4 In, float2 MinMax, out float4 Out)
-            {
-                float sinIn = sin(In);
-                float sinInOffset = sin(In + 1.0);
-                float randomno =  frac(sin((sinIn - sinInOffset) * (12.9898 + 78.233))*43758.5453);
-                float noise = lerp(MinMax.x, MinMax.y, randomno);
-                Out = sinIn + noise;
-            }
-
-            // Another set of noise functions
             // https://docs.unity3d.com/Packages/com.unity.shadergraph@6.9/manual/Simple-Noise-Node.html
 
             inline float unity_noise_randomValue (float2 uv)
@@ -203,8 +191,19 @@ Shader "Custom/Lava"
                 // scale controls wave frequency
                 // strength controls wave height/amplitude 
                 float2 uv = IN.uv;
-                uv += sin(uv.y * _DistortionScale + t) * _DistortionStrength;
+
+                //uv += sin(uv.y * _DistortionScale + t) * _DistortionStrength;
                 //uv += float2(sin(uv.x * _DistortionScale + t), cos(uv.y * _DistortionScale + t)) * _DistortionStrength;
+
+                float noise1 = 0.0;
+                float noise2 = 0.0;
+                float recenter = -0.5;
+                float scaleto1 = 2.0;
+
+                Unity_SimpleNoise_float(uv + float2(t * 0.1, 0.0), _DistortionScale, noise1);
+                Unity_SimpleNoise_float(uv + float2(0.0, t * 0.1 + 100.0), _DistortionScale, noise2);
+
+                uv += (float2(noise1, noise2) + recenter) * scaleto1 * _DistortionStrength;
 
                 // Voronoi is cell noise and essentially a mask that well apply to color
                 float voronoiOut = 0.0;
@@ -219,6 +218,7 @@ Shader "Custom/Lava"
                 // Remap the vornoi value so we can use it in blending lava colors
                 float mask = 1.0 - smoothstep(0.0, _EdgeSoftness * 10, voronoiOut);
 
+                // Merge the colors together to form a gradient of sorts
                 half3 lava = lerp(_DarkColor.rgb, _MidColor.rgb, mask);
                 lava = lerp(lava, _HotColor.rgb, mask * mask * _GlowIntensity);
 
