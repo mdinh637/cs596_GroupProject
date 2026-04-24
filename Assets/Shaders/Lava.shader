@@ -175,7 +175,24 @@ Shader "Custom/Lava"
 
             half4 frag(Varyings IN) : SV_Target
             {
-                half4 color = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
+                // Unity shaders are stateless as we learned in the shader assignment
+                // to get around that we have to use the provided Unity funtions for things like time
+
+                // Animation effect for moving distortion on UV
+                float t = _Time.y * _FlowSpeed;
+
+                // UV warping should happen before the Voronoi noise sampling/creation for lava flow effect
+                // scale controls wave frequency
+                // strength controls wave height/amplitude 
+                float2 uv = IN.uv;
+                uv += float2(sin(uv.x * _DistortionScale + t), cos(uv.y * _DistortionScale + t)) * _DistortionStrength;
+
+                float voronoiOut = 0.0;
+                float cells = 0.0;
+                Unity_Voronoi_float(uv, t * _AngleSpeed, _VoronoiScale, voronoiOut, cells);
+
+                // half4 color = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
+                half4 color = half4(voronoiOut, voronoiOut, voronoiOut, 1.0);
                 return color;
             }
             ENDHLSL
