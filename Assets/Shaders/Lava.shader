@@ -1,0 +1,233 @@
+Shader "Custom/Lava"
+{
+    Properties
+    {
+        [MainColor] _BaseColor("Base Color", Color) = (1, 1, 1, 1)
+        [MainTexture] _BaseMap("Base Map", 2D) = "white" {}
+
+         _VoronoiScale("Voronoi Scale", Float) = 6
+        _FlowSpeed("Flow Speed", Float) = 1
+        _DistortionScale("Distortion Scale", Float) = 3
+        _DistortionStrength("Distortion Strength", Float) = 0.15
+        _AngleSpeed("Angle Speed", Float) = 1
+        _EdgeSoftness("Edge Softness", Float) = 0.35
+        _GlowIntensity("Glow Intensity", Float) = 0.5
+
+        // Lava color options I tried out, feel free to experiment with your own colors!
+
+        // MAT1
+        // _HotColor("Hot Color", Color) = (0.8, 0.8, 0.5, 1)
+        // _MidColor("Mid Color", Color) = (0.5, 0.35, 0, 1)
+        //_DarkColor("Dark Color", Color) = (0.4, 0.05, 0, 1)
+
+        // MAT2
+        // _HotColor("Hot Color", Color) = (1.0, 0.62, 0.12, 1)
+        // _MidColor("Mid Color", Color) = (0.92, 0.34, 0.04, 1)
+        // _DarkColor("Dark Color", Color) = (0.42, 0.15, 0.02, 1)
+
+        // MAT3
+        _HotColor("Hot Color", Color) = (1.0, 0.82, 0.18, 1)
+        _MidColor("Mid Color", Color) = (0.92, 0.48, 0.08, 1)
+        _DarkColor("Dark Color", Color) = (0.55, 0.18, 0.03, 1)
+
+        // MAT4
+        // _HotColor("Hot Color", Color) = (1.0, 0.35, 0.05, 1)
+        // _MidColor("Mid Color", Color) = (0.88, 0.16, 0.02, 1)
+        // _DarkColor("Dark Color", Color) = (0.45, 0.05, 0.01, 1)
+    }
+
+    SubShader
+    {
+        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline" }
+
+        Pass
+        {
+            HLSLPROGRAM
+
+            #pragma vertex vert
+            #pragma fragment frag
+
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            struct Attributes
+            {
+                float4 positionOS : POSITION;
+                float2 uv : TEXCOORD0;
+            };
+
+            struct Varyings
+            {
+                float4 positionHCS : SV_POSITION;
+                float2 uv : TEXCOORD0;
+            };
+
+            TEXTURE2D(_BaseMap);
+            SAMPLER(sampler_BaseMap);
+
+            CBUFFER_START(UnityPerMaterial)
+                half4 _BaseColor;
+                float4 _BaseMap_ST;
+
+                float _VoronoiScale;
+                float _FlowSpeed;
+                float _DistortionScale;
+                float _DistortionStrength;
+                float _AngleSpeed;
+                float _EdgeSoftness;
+                float _GlowIntensity;
+
+                half4 _HotColor;
+                half4 _MidColor;
+                half4 _DarkColor;
+            CBUFFER_END
+
+            // Convention to add helper functions after cbuffer
+
+            // Unity documentation has some base voronoi noise code
+            // https://docs.unity3d.com/Packages/com.unity.shadergraph@6.9/manual/Voronoi-Node.html
+
+            inline float2 unity_voronoi_noise_randomVector (float2 UV, float offset)
+            {
+                float2x2 m = float2x2(15.27, 47.63, 99.41, 89.98);
+                UV = frac(sin(mul(UV, m)) * 46839.32);
+                return float2(sin(UV.y*+offset)*0.5+0.5, cos(UV.x*offset)*0.5+0.5);
+            }
+
+            void Unity_Voronoi_float(float2 UV, float AngleOffset, float CellDensity, out float Out, out float Cells)
+            {
+                float2 g = floor(UV * CellDensity);
+                float2 f = frac(UV * CellDensity);
+                float t = 8.0;
+                float3 res = float3(8.0, 0.0, 0.0);
+
+                for(int y=-1; y<=1; y++)
+                {
+                    for(int x=-1; x<=1; x++)
+                    {
+                        float2 lattice = float2(x,y);
+                        float2 offset = unity_voronoi_noise_randomVector(lattice + g, AngleOffset);
+                        float d = distance(lattice + offset, f);
+                        if(d < res.x)
+                        {
+                            res = float3(d, offset.x, offset.y);
+                            Out = res.x;
+                            Cells = res.y;
+                        }
+                    }
+                }
+            }
+
+            // Unity docs also have noise functions we can use 
+            // https://docs.unity3d.com/Packages/com.unity.shadergraph@6.9/manual/Simple-Noise-Node.html
+
+            inline float unity_noise_randomValue (float2 uv)
+            {
+                return frac(sin(dot(uv, float2(12.9898, 78.233)))*43758.5453);
+            }
+
+            inline float unity_noise_interpolate (float a, float b, float t)
+            {
+                return (1.0-t)*a + (t*b);
+            }
+
+            inline float unity_valueNoise (float2 uv)
+            {
+                float2 i = floor(uv);
+                float2 f = frac(uv);
+                f = f * f * (3.0 - 2.0 * f);
+
+                uv = abs(frac(uv) - 0.5);
+                float2 c0 = i + float2(0.0, 0.0);
+                float2 c1 = i + float2(1.0, 0.0);
+                float2 c2 = i + float2(0.0, 1.0);
+                float2 c3 = i + float2(1.0, 1.0);
+                float r0 = unity_noise_randomValue(c0);
+                float r1 = unity_noise_randomValue(c1);
+                float r2 = unity_noise_randomValue(c2);
+                float r3 = unity_noise_randomValue(c3);
+
+                float bottomOfGrid = unity_noise_interpolate(r0, r1, f.x);
+                float topOfGrid = unity_noise_interpolate(r2, r3, f.x);
+                float t = unity_noise_interpolate(bottomOfGrid, topOfGrid, f.y);
+                return t;
+            }
+
+            void Unity_SimpleNoise_float(float2 UV, float Scale, out float Out)
+            {
+                float t = 0.0;
+
+                float freq = pow(2.0, float(0));
+                float amp = pow(0.5, float(3-0));
+                t += unity_valueNoise(float2(UV.x*Scale/freq, UV.y*Scale/freq))*amp;
+
+                freq = pow(2.0, float(1));
+                amp = pow(0.5, float(3-1));
+                t += unity_valueNoise(float2(UV.x*Scale/freq, UV.y*Scale/freq))*amp;
+
+                freq = pow(2.0, float(2));
+                amp = pow(0.5, float(3-2));
+                t += unity_valueNoise(float2(UV.x*Scale/freq, UV.y*Scale/freq))*amp;
+
+                Out = t;
+            }
+
+            Varyings vert(Attributes IN)
+            {
+                Varyings OUT;
+                OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
+                OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap);
+                return OUT;
+            }
+
+            half4 frag(Varyings IN) : SV_Target
+            {
+                // Unity shaders are stateless as we learned in the shader assignment
+                // to get around that we have to use the provided Unity functions for things like time
+
+                // Animation effect for moving distortion on UV
+                float t = _Time.y * _FlowSpeed;
+
+                // UV warping should happen before the Voronoi noise sampling/creation for lava flow effect
+                // scale controls wave frequency
+                // strength controls wave height/amplitude 
+                float2 uv = IN.uv;
+
+                //uv += sin(uv.y * _DistortionScale + t) * _DistortionStrength;
+                //uv += float2(sin(uv.x * _DistortionScale + t), cos(uv.y * _DistortionScale + t)) * _DistortionStrength;
+
+                float noise1 = 0.0;
+                float noise2 = 0.0;
+                float recenter = -0.5;
+                float scaleto1 = 2.0;
+
+                Unity_SimpleNoise_float(uv + float2(t * 0.25, 0.0), _DistortionScale, noise1);
+                Unity_SimpleNoise_float(uv + float2(0.0, t * 0.2 + 100.0), _DistortionScale, noise2);
+
+                uv += (float2(noise1, noise2) + recenter) * scaleto1 * _DistortionStrength;
+
+                // Voronoi is cell noise and essentially a mask that well apply to color
+                float voronoiOut = 0.0;
+                float cells = 0.0;
+                Unity_Voronoi_float(uv, t * _AngleSpeed, _VoronoiScale, voronoiOut, cells);
+
+                // Use another noise function to add some more variation to the voronoi output
+                float noise = 0.0;
+                Unity_SimpleNoise_float(uv + t * 0.1, _VoronoiScale, noise);
+                voronoiOut += noise * 0.2;
+
+                // Remap the vornoi value so we can use it in blending lava colors
+                float mask = 1.0 - smoothstep(0.0, _EdgeSoftness * 6, voronoiOut);
+
+                // Merge the colors together to form a gradient of sorts
+                half3 lava = lerp(_DarkColor.rgb, _MidColor.rgb, mask);
+                lava = lerp(lava, _HotColor.rgb, mask * mask * _GlowIntensity);
+
+                half4 baseLayer = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
+                //half4 color = half4(voronoiOut, voronoiOut, voronoiOut, 1.0);
+                half4 color = half4(lava, 1.0) * baseLayer;
+                return color;
+            }
+            ENDHLSL
+        }
+    }
+}
