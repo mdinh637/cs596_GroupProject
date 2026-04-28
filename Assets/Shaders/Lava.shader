@@ -182,7 +182,7 @@ Shader "Custom/Lava"
             half4 frag(Varyings IN) : SV_Target
             {
                 // Unity shaders are stateless as we learned in the shader assignment
-                // to get around that we have to use the provided Unity funtions for things like time
+                // to get around that we have to use the provided Unity functions for things like time
 
                 // Animation effect for moving distortion on UV
                 float t = _Time.y * _FlowSpeed;
