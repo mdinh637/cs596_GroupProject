@@ -8,7 +8,7 @@
 
 | Member | Role |
 |--------|------|
-| **Husain Patanwala** | **Asset research / game concept design / tower+ability upgrade system + projectile mechanics** |
+| **Husain Patanwala** | **Asset research / game concept design / tower+ability upgrade system + projectile mechanics** / Custom shader(s) |
 | **Glory Kanda** | **Handles playtesting, bug documentation, game balance feedback, and final submission materials.** |
 | **Michael Dinh** | **Implementing ally troop and enemy logic, troop placement, combat system** |
 | **Alejandro Alvarado** | **Enemy tower functionality, HUD and UI** |
