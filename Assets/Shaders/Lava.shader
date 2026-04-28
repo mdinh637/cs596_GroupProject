@@ -10,7 +10,7 @@ Shader "Custom/Lava"
         _DistortionScale("Distortion Scale", Float) = 3
         _DistortionStrength("Distortion Strength", Float) = 0.15
         _AngleSpeed("Angle Speed", Float) = 1
-        _EdgeSoftness("Edge Softness", Float) = 1
+        _EdgeSoftness("Edge Softness", Float) = 0.35
         _GlowIntensity("Glow Intensity", Float) = 0.5
 
         // Lava color options I tried out, feel free to experiment with your own colors!
@@ -200,8 +200,8 @@ Shader "Custom/Lava"
                 float recenter = -0.5;
                 float scaleto1 = 2.0;
 
-                Unity_SimpleNoise_float(uv + float2(t * 0.1, 0.0), _DistortionScale, noise1);
-                Unity_SimpleNoise_float(uv + float2(0.0, t * 0.1 + 100.0), _DistortionScale, noise2);
+                Unity_SimpleNoise_float(uv + float2(t * 0.25, 0.0), _DistortionScale, noise1);
+                Unity_SimpleNoise_float(uv + float2(0.0, t * 0.2 + 100.0), _DistortionScale, noise2);
 
                 uv += (float2(noise1, noise2) + recenter) * scaleto1 * _DistortionStrength;
 
@@ -213,10 +213,10 @@ Shader "Custom/Lava"
                 // Use another noise function to add some more variation to the voronoi output
                 float noise = 0.0;
                 Unity_SimpleNoise_float(uv + t * 0.1, _VoronoiScale, noise);
-                voronoiOut += noise * 0.5;
+                voronoiOut += noise * 0.2;
 
                 // Remap the vornoi value so we can use it in blending lava colors
-                float mask = 1.0 - smoothstep(0.0, _EdgeSoftness * 10, voronoiOut);
+                float mask = 1.0 - smoothstep(0.0, _EdgeSoftness * 6, voronoiOut);
 
                 // Merge the colors together to form a gradient of sorts
                 half3 lava = lerp(_DarkColor.rgb, _MidColor.rgb, mask);
