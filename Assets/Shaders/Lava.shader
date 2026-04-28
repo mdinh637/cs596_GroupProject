@@ -222,9 +222,9 @@ Shader "Custom/Lava"
                 half3 lava = lerp(_DarkColor.rgb, _MidColor.rgb, mask);
                 lava = lerp(lava, _HotColor.rgb, mask * mask * _GlowIntensity);
 
-                // half4 color = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
+                half4 baseLayer = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
                 //half4 color = half4(voronoiOut, voronoiOut, voronoiOut, 1.0);
-                half4 color = half4(lava, 1.0);
+                half4 color = half4(lava, 1.0) * baseLayer;
                 return color;
             }
             ENDHLSL
