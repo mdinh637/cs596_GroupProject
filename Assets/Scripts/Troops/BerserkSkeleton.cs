@@ -1,0 +1,79 @@
+using UnityEngine;
+
+public class BerserkSkeleton : Troop
+{
+    [Header("Berserk Skeleton Stats")]
+    [SerializeField] private float damage = 4f; //aoe dmg stat
+    [SerializeField] private float aoeRadius = 3f; //range around skeleton hit by aoe
+    [SerializeField] private float knockbackForce = 5f; //knockback force on troops that aren't heavy
+    [SerializeField] private float knockbackUpForce = 5f; //upward knockback force on said troops ^
+
+    [Header("Animations")]
+    [SerializeField] private Animator animator; //animator attached to berserk skeleton
+    [SerializeField] private string attackTrigger = "Attack"; //trigger in skeleton anim
+    [SerializeField] private string movingBool = "Moving"; //bool for movement anim
+
+    protected override void Update()
+    {
+        //call base update (handles movement, targeting, atking)
+        base.Update();
+
+        if (animator == null)
+            return;
+
+        //if we have a target and in atk range, stay stationary
+        if (currentEnemy != null && Vector3.Distance(transform.position, currentEnemy.transform.position) <= attackRange)
+        {
+            animator.SetBool(movingBool, false); //idle while attacking
+        }
+        else
+        {
+            animator.SetBool(movingBool, true); //walking when moving
+        }
+    }
+
+    protected override void Attack()
+    {
+        base.Attack(); //updates atk cd timer and log attacks
+
+        if (animator != null)
+        {
+            animator.SetTrigger(attackTrigger); //play atk animation
+        }
+
+        Collider[] enemiesHit = Physics.OverlapSphere(transform.position, aoeRadius, whatIsEnemy); //get enemies in aoe range
+
+        foreach (Collider enemyCollider in enemiesHit)
+        {
+            Troop enemyTroop = enemyCollider.GetComponentInParent<Troop>(); //get troop from enemy root or parent
+
+            if (enemyTroop == null)
+                continue;
+
+            enemyTroop.TakeDamage(damage); //deal aoe dmg to enemy troop
+
+            //only knockback troops that aren't heavy type
+            if (enemyTroop.IsHeavy() == false)
+            {
+                Vector3 knockbackDirection = enemyTroop.transform.position - transform.position; //direction away from skeleton
+                knockbackDirection.y = 0;
+
+                if (knockbackDirection != Vector3.zero)
+                {
+                    Vector3 knockbackForceDirection = knockbackDirection.normalized * knockbackForce; //horizontal knockback force
+                    knockbackForceDirection.y = knockbackUpForce; //add upward force for arc
+
+                    enemyTroop.ApplyKnockback(knockbackForceDirection); //apply knockback through troop logic
+                }
+            }
+        }
+    }
+
+    protected override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos(); //draw normal sight and atk range
+
+        Gizmos.color = Color.purple;
+        Gizmos.DrawWireSphere(transform.position, aoeRadius); //show aoe range in scene
+    }
+}

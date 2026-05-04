@@ -13,11 +13,11 @@ TagManager:
   - UI
   - Ground
   - PlaceableArea
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ally
+  - Enemy
+  - Zone1
+  - Zone2
+  - Zone3
   - 
   - 
   - 
