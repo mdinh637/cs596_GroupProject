@@ -103,7 +103,11 @@ MonoBehaviour:
   sightRange: 3
   attackRange: 1
   attackCooldown: 7
+  lavaFlashDuration: 0.5
+  lavaFlashColor: {r: 1, g: 0, b: 0, a: 1}
   isHeavy: 1
+  isRanged: 0
+  isTargetable: 1
   knockbackRecoverTime: 0.5
   whatIsEnemy:
     serializedVersion: 2

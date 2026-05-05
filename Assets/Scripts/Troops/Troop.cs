@@ -15,10 +15,14 @@ public class Troop : MonoBehaviour
     [SerializeField] protected float sightRange = 30f; //range troop can notice enemies in
     [SerializeField] protected float attackRange = 15f; //range troop can attack in
     [SerializeField] protected float attackCooldown = 1f; //atk cd in seconds
+    [SerializeField] private float lavaFlashDuration = 0.5f; //how long unit blinks before disappearing when touching lava
+    [SerializeField] private Color lavaFlashColor = Color.red; //blinking color before burning to death
     protected float lastTimeAttacked; //time when troop last attacked
 
     [Header("Troop Type")]
     [SerializeField] protected bool isHeavy = false; //whether troop resists knockback, exclusive trait for tanks
+    [SerializeField] protected bool isRanged = false; //whether troop is ranged type
+    [SerializeField] protected bool isTargetable = true; //whether enemies can target this troop
 
     [SerializeField] protected float knockbackRecoverTime = 0.5f; //time delay before resuming movement, fixes weird head stack glitch
     protected bool isKnockedBack; //whether troop is currently knocked back
@@ -61,7 +65,17 @@ public class Troop : MonoBehaviour
 
     public bool IsHeavy()
     {
-        return isHeavy; //return if troop can resist kb effect
+        return isHeavy; //return if troop is heavy type, resists knockback
+    }
+
+    public bool IsRanged()
+    {
+        return isRanged; //return if troop is ranged type
+    }
+
+    public bool IsTargetable()
+    {
+        return isTargetable; //return if troop can be targeted
     }
 
     protected virtual void HandleMovement()
@@ -154,27 +168,34 @@ public class Troop : MonoBehaviour
 
     protected virtual void UpdateTarget()
     {
-        //if current enemy exists, make sure it is still in sight range
+        //if current enemy exists, make sure it is still in sight range and targetable
         if (currentEnemy != null)
         {
             float distanceToEnemy = Vector3.Distance(transform.position, currentEnemy.transform.position);
 
-            if (distanceToEnemy <= sightRange)
-                return; //keep current target if still in sight range
+            if (distanceToEnemy <= sightRange && currentEnemy.IsTargetable())
+                return; //keep current target if still in sight range and targetable
 
-            currentEnemy = null; //clear target if it leaves sight range
+            currentEnemy = null; //clear target if it leaves sight range or becomes untargetable
         }
 
         Collider[] enemiesAround = Physics.OverlapSphere(transform.position, sightRange, whatIsEnemy); //get enemies within sight range
 
-        if (enemiesAround.Length > 0)
+        foreach (Collider enemyCollider in enemiesAround)
         {
-            currentEnemy = enemiesAround[0].GetComponentInParent<Troop>(); //get troop from enemy root or parent
+            Troop enemyTroop = enemyCollider.GetComponentInParent<Troop>(); //get troop from enemy root or parent
+
+            if (enemyTroop == null)
+                continue;
+
+            if (enemyTroop.IsTargetable() == false)
+                continue; //skip troops that can't be targeted
+
+            currentEnemy = enemyTroop; //set first valid target
+            return;
         }
-        else
-        {
-            currentEnemy = null; //no target found
-        }
+
+        currentEnemy = null; //no target found
     }
 
     protected virtual void Attack()
@@ -216,12 +237,44 @@ public class Troop : MonoBehaviour
 
     public virtual void TakeDamage(float damage)
     {
+        if (isTargetable == false)
+            return; //ignore damage while untargetable for rogue
+
         currentHealth -= damage; //reduce health by damage taken
 
         if (currentHealth <= 0)
         {
             Die();
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        //destroy troop if it touches lava
+        if (other.gameObject.layer == LayerMask.NameToLayer("Lava"))
+        {
+            StartCoroutine(LavaDeath()); //start death effect
+        }
+    }
+
+    private System.Collections.IEnumerator LavaDeath()
+    {
+        //get all renderers of troops
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            Material[] mats = renderers[i].materials;
+
+            for (int j = 0; j < mats.Length; j++)
+            {
+                //set new color to transparent red when touching lava before death
+                Color transparentRed = new Color(1f, 0f, 0f, 0.5f);
+                mats[j].color = transparentRed;
+            }
+        }
+        yield return new WaitForSeconds(lavaFlashDuration);
+        Destroy(gameObject); //remove troop after flash
     }
 
     protected virtual void Die()
