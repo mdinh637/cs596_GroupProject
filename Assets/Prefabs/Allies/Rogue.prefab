@@ -1828,7 +1828,7 @@ MonoBehaviour:
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 512
-  targetPoint: {fileID: 0}
+  targetCollider: {fileID: 0}
   waypoints: []
   waypointArrivalDistance: 0.1
   damage: 2

@@ -29,7 +29,7 @@ public class Troop : MonoBehaviour
 
     [Header("Targeting")]
     [SerializeField] protected LayerMask whatIsEnemy; //layer mask for what is considered an enemy
-    [SerializeField] protected Transform targetPoint; //point used for distance checks if needed later
+    [SerializeField] protected Collider targetCollider; //collider area for bases
     protected Troop currentEnemy; //current enemy troop target
 
     [Header("Pathing")]
@@ -78,6 +78,24 @@ public class Troop : MonoBehaviour
         return isTargetable; //return if troop can be targeted
     }
 
+    protected Vector3 GetEnemyTargetPosition()
+    {
+        //use closest point on target collider to attack, prevents troop crowding over a single point
+        if (currentEnemy != null && currentEnemy.targetCollider != null)
+        {
+            return currentEnemy.targetCollider.ClosestPoint(transform.position);
+        }
+
+        //fallback to enemy root position for normal troops, old system I already had implemented
+        if (currentEnemy != null)
+        {
+            return currentEnemy.transform.position;
+        }
+
+        //fallback if no enemy exists
+        return transform.position;
+    }
+
     protected virtual void HandleMovement()
     {
         if (rb == null)
@@ -95,12 +113,13 @@ public class Troop : MonoBehaviour
         }
         else
         {
-            float distanceToEnemy = Vector3.Distance(transform.position, currentEnemy.transform.position); //distance from this troop to enemy
+            Vector3 enemyTargetPosition = GetEnemyTargetPosition(); //position troop should move toward or attack
+            float distanceToEnemy = Vector3.Distance(transform.position, enemyTargetPosition); //distance from this troop to enemy target point
 
             //if enemy is in atk range, stop moving and face enemy
             if (distanceToEnemy <= attackRange)
             {
-                Vector3 directionToEnemy = currentEnemy.transform.position - transform.position; //direction towards enemy
+                Vector3 directionToEnemy = enemyTargetPosition - transform.position; //direction towards enemy target point
                 directionToEnemy.y = 0;
 
                 if (directionToEnemy != Vector3.zero)
@@ -114,7 +133,7 @@ public class Troop : MonoBehaviour
             }
 
             //if enemy is only in sight range, keep moving towards them
-            moveDirection = currentEnemy.transform.position - transform.position; //direction towards enemy
+            moveDirection = enemyTargetPosition - transform.position; //direction towards enemy target point
             moveDirection.y = 0;
             moveDirection = moveDirection.normalized; //keeping speed consistent
         }
@@ -171,7 +190,8 @@ public class Troop : MonoBehaviour
         //if current enemy exists, make sure it is still in sight range and targetable
         if (currentEnemy != null)
         {
-            float distanceToEnemy = Vector3.Distance(transform.position, currentEnemy.transform.position);
+            Vector3 enemyTargetPosition = GetEnemyTargetPosition(); //position used for sight range checks
+            float distanceToEnemy = Vector3.Distance(transform.position, enemyTargetPosition);
 
             if (distanceToEnemy <= sightRange && currentEnemy.IsTargetable())
                 return; //keep current target if still in sight range and targetable
@@ -209,7 +229,8 @@ public class Troop : MonoBehaviour
         if (currentEnemy == null)
             return false;
 
-        float distanceToEnemy = Vector3.Distance(transform.position, currentEnemy.transform.position); //distance from this troop to enemy
+        Vector3 enemyTargetPosition = GetEnemyTargetPosition(); //position used for atk range checks
+        float distanceToEnemy = Vector3.Distance(transform.position, enemyTargetPosition); //distance from this troop to enemy target point
 
         return distanceToEnemy <= attackRange && Time.time > lastTimeAttacked + attackCooldown; //can atk if target is in atk range and cd is over
     }

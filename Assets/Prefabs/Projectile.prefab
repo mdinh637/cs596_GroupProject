@@ -153,4 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 483b26dff0de8ce49a42915cf22e9c10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
-  explosion: {fileID: 0}
+  damage: 5
+  enemyLayers:
+    serializedVersion: 2
+    m_Bits: 512
+  lavaLayerName: Lava

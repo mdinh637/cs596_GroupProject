@@ -6,6 +6,7 @@ public class FireProjectile : MonoBehaviour
     public Rigidbody m_projectile;
     public Transform m_launchPoint;
     public float m_speed = 1f;
+    public float m_fireCooldown = 5f; //firing delay for projectile
 
     [Header("Raycast Targeting")]
     public float m_raycastMaxDistance = 100f;
@@ -16,6 +17,8 @@ public class FireProjectile : MonoBehaviour
     public LayerMask m_raycastLayers = Physics.AllLayers;
     public float m_currMaxFiringRange = 12f;
     public float m_lobHeight = 2f;
+    
+    private float m_nextFireTime; //cd for firing projectile
 
     void Update()
     {
@@ -23,11 +26,13 @@ public class FireProjectile : MonoBehaviour
         // If we haven't clicked and we are not in range then don't fire
         // we have to use single line guard to avoid short circuit no assign errors
         if (!Input.GetMouseButtonDown(0)) return;
+        if (Time.time < m_nextFireTime) return; //if cd isn't done, don't fire
         if (m_projectile == null) return;
         if (!TryGetMouseWorldPoint(out Vector3 targetPoint)) return;
         if (!TargetInRange(targetPoint, out float flatDistance)) return;
 
         FireLobAtTarget(targetPoint);
+        m_nextFireTime = Time.time + m_fireCooldown; //set the next fire time
     }
 
     void FireLobAtTarget(Vector3 targetPoint)

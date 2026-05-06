@@ -1,27 +1,17 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private bool canControl;
-    [SerializeField] private Vector3 levelCenterPoint;  //Click on center of level to find coordinates
+    [SerializeField] private Vector3 levelCenterPoint; //Click on center of level to find coordinates
     [SerializeField] private float maxDistanceFromCenter;
 
     [Header("Movement Details")]
     [SerializeField] private float movementSpeed = 120;
-    [SerializeField] private float mouseMovementSpeed = 5;
-    [SerializeField] private float edgeMovementSpeed = 50;
-    [SerializeField] private float edgeTreshold = 10;
-    private float screenWidth;
-    private float screenHeight;
 
     [Header("Rotation Details")]
-    [SerializeField] private Transform focusPoint;
-    [SerializeField] private float maxFocusPointDistance = 15;
     [SerializeField] private float rotationSpeed = 200;
-    [Space]
+    private float yaw;
     private float pitch;
     [SerializeField] private float minPitch = 5;
     [SerializeField] private float maxPitch = 85;
@@ -31,31 +21,24 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float minZoom = 3;
     [SerializeField] private float maxZoom = 15;
 
-
     private float smoothTime = 0.1f;
     private Vector3 movementVelocity = Vector3.zero;
-    private Vector3 mouseMovementVelocity = Vector3.zero;
-    private Vector3 edgeMovementVelocity = Vector3.zero;
     private Vector3 zoomVelocity = Vector3.zero;
-    private Vector3 lastMousePosition;
 
     private void Start()
     {
-        screenWidth = Screen.width;
-        screenHeight = Screen.height;
+        yaw = transform.eulerAngles.y; //store starting y rotation
+        pitch = transform.eulerAngles.x; //store starting x rotation
     }
 
     void Update()
     {
-        if(canControl == false)
+        if (canControl == false)
             return;
+
         HandleRotation();
         HandleZoom();
-        HandleEdgeMovement();
-        HandleMouseMovement();
         HandleMovement();
-
-        focusPoint.position = transform.position + (transform.forward * GetFocusPointDistance());
     }
 
     public void EnableCameraControls(bool enable) => canControl = enable;
@@ -67,37 +50,26 @@ public class CameraController : MonoBehaviour
         Vector3 zoomDirection = transform.forward * scroll * zoomSpeed;
         Vector3 targetPosition = transform.position + zoomDirection;
 
-        if(transform.position.y < minZoom && scroll > 0)    //Stop camera from zooming in too close / too far
+        if (transform.position.y < minZoom && scroll > 0) //stop camera from zooming in too close
             return;
 
-        if(transform.position.y > maxZoom && scroll < 0)
+        if (transform.position.y > maxZoom && scroll < 0) //stop camera from zooming out too far
             return;
 
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref zoomVelocity, smoothTime);
     }
 
-    private float GetFocusPointDistance()   //Calculate and handle object collisions and interferance (using raycasting)
-    {
-        if(Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, maxFocusPointDistance))
-            return hit.distance;
-
-        return maxFocusPointDistance;
-    }
-
     private void HandleRotation()
     {
-        if(Input.GetMouseButton(1)) //RMB for rotations
+        if (Input.GetMouseButton(1)) //RMB for rotations
         {
             float horizontalRotation = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
             float verticalRotation = Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
-            
-            pitch = Mathf.Clamp(pitch - verticalRotation, minPitch, maxPitch);  //Pitch limitations for camera angles
 
-            transform.RotateAround(focusPoint.position, Vector3.up, horizontalRotation);
-            transform.RotateAround(focusPoint.position, transform.right, pitch - transform.eulerAngles.x); //Lock camera onto focus point sphere
+            yaw += horizontalRotation; //rotate camera left and right
+            pitch = Mathf.Clamp(pitch - verticalRotation, minPitch, maxPitch); //limit camera looking up and down
 
-            transform.LookAt(focusPoint);
-
+            transform.rotation = Quaternion.Euler(pitch, yaw, 0f); //rotate in place instead of orbiting around focus point
         }
     }
 
@@ -108,81 +80,27 @@ public class CameraController : MonoBehaviour
         float vInput = Input.GetAxisRaw("Vertical");
         float hInput = Input.GetAxisRaw("Horizontal");
 
-        if(vInput == 0 && hInput == 0)  //Condition for function
+        if (vInput == 0 && hInput == 0) //condition for function
             return;
 
-        Vector3 flatForward = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
+        Vector3 flatForward = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
+        Vector3 flatRight = Vector3.ProjectOnPlane(transform.right, Vector3.up).normalized;
 
-        if(vInput > 0)
-            targetPosition += flatForward *movementSpeed * Time.deltaTime;
-        if(vInput < 0)
-            targetPosition -= flatForward *movementSpeed * Time.deltaTime;
+        if (vInput > 0)
+            targetPosition += flatForward * movementSpeed * Time.deltaTime;
+        if (vInput < 0)
+            targetPosition -= flatForward * movementSpeed * Time.deltaTime;
 
-        if(hInput > 0)
-            targetPosition += transform.right * movementSpeed * Time.deltaTime;
-        if(hInput < 0)
-            targetPosition -= transform.right * movementSpeed * Time.deltaTime;
+        if (hInput > 0)
+            targetPosition += flatRight * movementSpeed * Time.deltaTime;
+        if (hInput < 0)
+            targetPosition -= flatRight * movementSpeed * Time.deltaTime;
 
-        if(Vector3.Distance(levelCenterPoint, targetPosition) > maxDistanceFromCenter)
+        if (Vector3.Distance(levelCenterPoint, targetPosition) > maxDistanceFromCenter)
         {
             targetPosition = levelCenterPoint + (targetPosition - levelCenterPoint).normalized * maxDistanceFromCenter;
         }
 
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref movementVelocity, smoothTime);
-    }
-    
-    private void HandleMouseMovement()
-    {
-        if(Input.GetMouseButtonDown(2)) //Condition for function
-        {
-            lastMousePosition = Input.mousePosition;
-        }
-
-        if(Input.GetMouseButton(2))
-        {
-            Vector3 positionDifference = Input.mousePosition - lastMousePosition;
-            Vector3 moveRight = transform.right * (-positionDifference.x) * mouseMovementSpeed * Time.deltaTime;
-            Vector3 moveForward = transform.forward * (-positionDifference.y) * mouseMovementSpeed * Time.deltaTime;
-
-            moveRight.y = 0;
-            moveForward.y = 0;
-
-            Vector3 movement = moveRight + moveForward;
-            Vector3 targetPosition = transform.position + movement;
-
-            if(Vector3.Distance(levelCenterPoint, targetPosition) > maxDistanceFromCenter)  //Handle level constraints
-            {
-                targetPosition = levelCenterPoint + (targetPosition - levelCenterPoint).normalized * maxDistanceFromCenter;
-            }
-
-            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref mouseMovementVelocity, smoothTime);
-            lastMousePosition = Input.mousePosition;
-        }
-    }
-
-    private void HandleEdgeMovement()   //Camera movement when moving mouse to sides of screen (Optional but felt right to include)
-    {
-        Vector3 targetPosition = transform.position;
-        Vector3 mousePosition = Input.mousePosition;
-        Vector3 flatForward = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
-
-        if(mousePosition.x > screenWidth - edgeTreshold)
-            targetPosition += transform.right * edgeMovementSpeed * Time.deltaTime;
-
-        if(mousePosition.x < edgeTreshold)
-            targetPosition -= transform.right * edgeMovementSpeed * Time.deltaTime;
-
-        if(mousePosition.y > screenHeight - edgeTreshold)
-            targetPosition += flatForward * edgeMovementSpeed * Time.deltaTime;
-
-        if(mousePosition.y < edgeTreshold)
-            targetPosition -= flatForward * edgeMovementSpeed * Time.deltaTime;
-
-        if(Vector3.Distance(levelCenterPoint, targetPosition) > maxDistanceFromCenter)  //Handle level constraints
-        {
-            targetPosition = levelCenterPoint + (targetPosition - levelCenterPoint).normalized * maxDistanceFromCenter;
-        }
-        
-        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref edgeMovementVelocity, smoothTime);
     }
 }

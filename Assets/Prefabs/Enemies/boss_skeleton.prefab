@@ -356,7 +356,7 @@ MonoBehaviour:
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 256
-  targetPoint: {fileID: 0}
+  targetCollider: {fileID: 0}
   waypoints:
   - {fileID: 0}
   - {fileID: 0}
