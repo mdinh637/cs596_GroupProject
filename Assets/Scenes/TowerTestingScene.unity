@@ -1538,6 +1538,11 @@ MonoBehaviour:
   targetCollider: {fileID: 600327356}
   waypoints: []
   waypointArrivalDistance: 0.1
+  attackSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  hurtSound: {fileID: 0}
+  spawnSound: {fileID: 0}
+  soundVolume: 0.7
 --- !u!1 &147427277
 GameObject:
   m_ObjectHideFlags: 0
@@ -2895,6 +2900,11 @@ MonoBehaviour:
   - {fileID: 1686510996}
   - {fileID: 813606244}
   waypointArrivalDistance: 0.2
+  attackSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  hurtSound: {fileID: 0}
+  spawnSound: {fileID: 0}
+  soundVolume: 0.7
   damage: 2
   animator: {fileID: 794477456}
   attackTrigger: Attack
@@ -5514,6 +5524,11 @@ MonoBehaviour:
   - {fileID: 1686510996}
   - {fileID: 813606244}
   waypointArrivalDistance: 0.2
+  attackSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  hurtSound: {fileID: 0}
+  spawnSound: {fileID: 0}
+  soundVolume: 0.7
   damage: 2
   animator: {fileID: 898879521}
   attackTrigger: Attack
@@ -6070,6 +6085,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e3f89aeedf611e4bb86b1db4a6185eb, type: 3}
+--- !u!136 &747593400 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 2939349913476534204, guid: afddf0d331a8c1645b9d3133c3d88a15, type: 3}
+  m_PrefabInstance: {fileID: 3864455462881292421}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &754680064
 GameObject:
   m_ObjectHideFlags: 0
@@ -10281,6 +10301,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1253807ed2552fb4da6674f97412a58f, type: 3}
   m_PrefabInstance: {fileID: 180771676}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &1316554785 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 3619360187122036229, guid: 1a606daf623e9274a80574a828b7078b, type: 3}
+  m_PrefabInstance: {fileID: 1223263370504690723}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1316765188
 GameObject:
   m_ObjectHideFlags: 0
@@ -10703,6 +10728,11 @@ MonoBehaviour:
   targetCollider: {fileID: 825548713}
   waypoints: []
   waypointArrivalDistance: 0.1
+  attackSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  hurtSound: {fileID: 0}
+  spawnSound: {fileID: 0}
+  soundVolume: 0.7
 --- !u!4 &1405259121 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -5194227793864580553, guid: 6bff3795c5224fa448ea17ca07b40bac, type: 3}
@@ -11034,6 +11064,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 063e3d8e6abc6774ca8417b6e5420077, type: 3}
   m_PrefabInstance: {fileID: 163866299}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &1442275800 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 7876099395656558442, guid: b51fb854850708d489bbd4ed7e1cdd9a, type: 3}
+  m_PrefabInstance: {fileID: 2566721369783749493}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1445105171
 GameObject:
@@ -12245,6 +12280,11 @@ Transform:
   - {fileID: 1252516408}
   m_Father: {fileID: 1445105172}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1575594249 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 3245460781226694834, guid: 3a5269f8f7bb4fa458731c7a9cc7eea5, type: 3}
+  m_PrefabInstance: {fileID: 2942512604489843987}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1581255930
 GameObject:
   m_ObjectHideFlags: 0
@@ -12376,6 +12416,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 063e3d8e6abc6774ca8417b6e5420077, type: 3}
   m_PrefabInstance: {fileID: 2103316436}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &1616133036 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 7725663180318950946, guid: b7471165e40ebdd45b0b5546216517db, type: 3}
+  m_PrefabInstance: {fileID: 3013728197450490832}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1619428327 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 08e1a894a2261db4c93ba5abc97ecd17, type: 3}
@@ -12432,6 +12477,11 @@ MonoBehaviour:
   - {fileID: 1686510996}
   - {fileID: 813606244}
   waypointArrivalDistance: 0.2
+  attackSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  hurtSound: {fileID: 0}
+  spawnSound: {fileID: 0}
+  soundVolume: 0.7
   damage: 2
   animator: {fileID: 1877222611}
   attackTrigger: Attack
@@ -12613,6 +12663,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08e1a894a2261db4c93ba5abc97ecd17, type: 3}
+--- !u!136 &1639790965 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 2411200917555616231, guid: a31c7eb370db28f45b419eb1c743ecf8, type: 3}
+  m_PrefabInstance: {fileID: 1980783582241825645}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1643103935 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 063e3d8e6abc6774ca8417b6e5420077, type: 3}
@@ -12920,6 +12975,11 @@ Transform:
   - {fileID: 458457735}
   m_Father: {fileID: 1252516408}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1662757645 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 3406543690732888198, guid: c54ec43c9f5aaae4c8ebb527520f2035, type: 3}
+  m_PrefabInstance: {fileID: 7522701267032241633}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1669788346 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f73b94d5acefbbf44ade8a7b1b4c90f2, type: 3}
@@ -17048,6 +17108,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: archer
       objectReference: {fileID: 0}
+    - target: {fileID: 9118540537481234644, guid: 1a606daf623e9274a80574a828b7078b, type: 3}
+      propertyPath: hurtSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 724131bc8a7f34041bb9f1701f0cb58d, type: 3}
+    - target: {fileID: 9118540537481234644, guid: 1a606daf623e9274a80574a828b7078b, type: 3}
+      propertyPath: deathSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
+    - target: {fileID: 9118540537481234644, guid: 1a606daf623e9274a80574a828b7078b, type: 3}
+      propertyPath: spawnSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
+    - target: {fileID: 9118540537481234644, guid: 1a606daf623e9274a80574a828b7078b, type: 3}
+      propertyPath: attackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: a0010a1a0c474473b81729eb770c485f, type: 3}
+    - target: {fileID: 9118540537481234644, guid: 1a606daf623e9274a80574a828b7078b, type: 3}
+      propertyPath: targetCollider
+      value: 
+      objectReference: {fileID: 1316554785}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17106,6 +17186,26 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8449561383687380800, guid: a31c7eb370db28f45b419eb1c743ecf8, type: 3}
+      propertyPath: hurtSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 724131bc8a7f34041bb9f1701f0cb58d, type: 3}
+    - target: {fileID: 8449561383687380800, guid: a31c7eb370db28f45b419eb1c743ecf8, type: 3}
+      propertyPath: deathSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
+    - target: {fileID: 8449561383687380800, guid: a31c7eb370db28f45b419eb1c743ecf8, type: 3}
+      propertyPath: spawnSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
+    - target: {fileID: 8449561383687380800, guid: a31c7eb370db28f45b419eb1c743ecf8, type: 3}
+      propertyPath: attackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: a0010a1a0c474473b81729eb770c485f, type: 3}
+    - target: {fileID: 8449561383687380800, guid: a31c7eb370db28f45b419eb1c743ecf8, type: 3}
+      propertyPath: targetCollider
+      value: 
+      objectReference: {fileID: 1639790965}
+    - target: {fileID: 8449561383687380800, guid: a31c7eb370db28f45b419eb1c743ecf8, type: 3}
       propertyPath: 'waypoints.Array.data[0]'
       value: 
       objectReference: {fileID: 1686510996}
@@ -17130,6 +17230,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: axe_barbarian
       objectReference: {fileID: 0}
+    - target: {fileID: 3151039163392490314, guid: b51fb854850708d489bbd4ed7e1cdd9a, type: 3}
+      propertyPath: hurtSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 724131bc8a7f34041bb9f1701f0cb58d, type: 3}
+    - target: {fileID: 3151039163392490314, guid: b51fb854850708d489bbd4ed7e1cdd9a, type: 3}
+      propertyPath: deathSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
+    - target: {fileID: 3151039163392490314, guid: b51fb854850708d489bbd4ed7e1cdd9a, type: 3}
+      propertyPath: spawnSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
+    - target: {fileID: 3151039163392490314, guid: b51fb854850708d489bbd4ed7e1cdd9a, type: 3}
+      propertyPath: attackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: a0010a1a0c474473b81729eb770c485f, type: 3}
+    - target: {fileID: 3151039163392490314, guid: b51fb854850708d489bbd4ed7e1cdd9a, type: 3}
+      propertyPath: targetCollider
+      value: 
+      objectReference: {fileID: 1442275800}
     - target: {fileID: 8404374292465565414, guid: b51fb854850708d489bbd4ed7e1cdd9a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.31
@@ -17183,6 +17303,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1581811871335451631, guid: 3a5269f8f7bb4fa458731c7a9cc7eea5, type: 3}
+      propertyPath: hurtSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 724131bc8a7f34041bb9f1701f0cb58d, type: 3}
+    - target: {fileID: 1581811871335451631, guid: 3a5269f8f7bb4fa458731c7a9cc7eea5, type: 3}
+      propertyPath: deathSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
+    - target: {fileID: 1581811871335451631, guid: 3a5269f8f7bb4fa458731c7a9cc7eea5, type: 3}
+      propertyPath: spawnSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
+    - target: {fileID: 1581811871335451631, guid: 3a5269f8f7bb4fa458731c7a9cc7eea5, type: 3}
+      propertyPath: attackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: a0010a1a0c474473b81729eb770c485f, type: 3}
+    - target: {fileID: 1581811871335451631, guid: 3a5269f8f7bb4fa458731c7a9cc7eea5, type: 3}
+      propertyPath: targetCollider
+      value: 
+      objectReference: {fileID: 1575594249}
     - target: {fileID: 1581811871335451631, guid: 3a5269f8f7bb4fa458731c7a9cc7eea5, type: 3}
       propertyPath: 'waypoints.Array.data[0]'
       value: 
@@ -17288,6 +17428,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7018485555118317565, guid: b7471165e40ebdd45b0b5546216517db, type: 3}
+      propertyPath: hurtSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 724131bc8a7f34041bb9f1701f0cb58d, type: 3}
+    - target: {fileID: 7018485555118317565, guid: b7471165e40ebdd45b0b5546216517db, type: 3}
+      propertyPath: deathSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
+    - target: {fileID: 7018485555118317565, guid: b7471165e40ebdd45b0b5546216517db, type: 3}
+      propertyPath: spawnSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
+    - target: {fileID: 7018485555118317565, guid: b7471165e40ebdd45b0b5546216517db, type: 3}
+      propertyPath: attackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: a0010a1a0c474473b81729eb770c485f, type: 3}
+    - target: {fileID: 7018485555118317565, guid: b7471165e40ebdd45b0b5546216517db, type: 3}
+      propertyPath: targetCollider
+      value: 
+      objectReference: {fileID: 1616133036}
     - target: {fileID: 8718577762103824454, guid: b7471165e40ebdd45b0b5546216517db, type: 3}
       propertyPath: m_Name
       value: Rogue
@@ -17346,6 +17506,26 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 173881360155472884, guid: afddf0d331a8c1645b9d3133c3d88a15, type: 3}
+      propertyPath: hurtSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 724131bc8a7f34041bb9f1701f0cb58d, type: 3}
+    - target: {fileID: 173881360155472884, guid: afddf0d331a8c1645b9d3133c3d88a15, type: 3}
+      propertyPath: deathSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
+    - target: {fileID: 173881360155472884, guid: afddf0d331a8c1645b9d3133c3d88a15, type: 3}
+      propertyPath: spawnSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
+    - target: {fileID: 173881360155472884, guid: afddf0d331a8c1645b9d3133c3d88a15, type: 3}
+      propertyPath: attackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: a0010a1a0c474473b81729eb770c485f, type: 3}
+    - target: {fileID: 173881360155472884, guid: afddf0d331a8c1645b9d3133c3d88a15, type: 3}
+      propertyPath: targetCollider
+      value: 
+      objectReference: {fileID: 747593400}
+    - target: {fileID: 173881360155472884, guid: afddf0d331a8c1645b9d3133c3d88a15, type: 3}
       propertyPath: 'waypoints.Array.data[0]'
       value: 
       objectReference: {fileID: 1052173038}
@@ -17374,6 +17554,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: berserk_skeleton
       objectReference: {fileID: 0}
+    - target: {fileID: 3383442334842337277, guid: c54ec43c9f5aaae4c8ebb527520f2035, type: 3}
+      propertyPath: hurtSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 724131bc8a7f34041bb9f1701f0cb58d, type: 3}
+    - target: {fileID: 3383442334842337277, guid: c54ec43c9f5aaae4c8ebb527520f2035, type: 3}
+      propertyPath: deathSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
+    - target: {fileID: 3383442334842337277, guid: c54ec43c9f5aaae4c8ebb527520f2035, type: 3}
+      propertyPath: spawnSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
+    - target: {fileID: 3383442334842337277, guid: c54ec43c9f5aaae4c8ebb527520f2035, type: 3}
+      propertyPath: attackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: a0010a1a0c474473b81729eb770c485f, type: 3}
+    - target: {fileID: 3383442334842337277, guid: c54ec43c9f5aaae4c8ebb527520f2035, type: 3}
+      propertyPath: targetCollider
+      value: 
+      objectReference: {fileID: 1662757645}
     - target: {fileID: 3383442334842337277, guid: c54ec43c9f5aaae4c8ebb527520f2035, type: 3}
       propertyPath: 'waypoints.Array.data[0]'
       value: 
@@ -17435,6 +17635,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 980551712202308944, guid: 4d181b223d7be1b41bbc86eb140f4901, type: 3}
+      propertyPath: hurtSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 724131bc8a7f34041bb9f1701f0cb58d, type: 3}
+    - target: {fileID: 980551712202308944, guid: 4d181b223d7be1b41bbc86eb140f4901, type: 3}
+      propertyPath: deathSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
+    - target: {fileID: 980551712202308944, guid: 4d181b223d7be1b41bbc86eb140f4901, type: 3}
+      propertyPath: spawnSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
+    - target: {fileID: 980551712202308944, guid: 4d181b223d7be1b41bbc86eb140f4901, type: 3}
+      propertyPath: attackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: a0010a1a0c474473b81729eb770c485f, type: 3}
     - target: {fileID: 980551712202308944, guid: 4d181b223d7be1b41bbc86eb140f4901, type: 3}
       propertyPath: 'waypoints.Array.data[0]'
       value: 

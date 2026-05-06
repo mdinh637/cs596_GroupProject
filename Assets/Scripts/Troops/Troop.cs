@@ -19,6 +19,8 @@ public class Troop : MonoBehaviour
     [SerializeField] private Color lavaFlashColor = Color.red; //blinking color before burning to death
     protected float lastTimeAttacked; //time when troop last attacked
 
+    
+
     [Header("Troop Type")]
     [SerializeField] protected bool isHeavy = false; //whether troop resists knockback, exclusive trait for tanks
     [SerializeField] protected bool isRanged = false; //whether troop is ranged type
@@ -37,11 +39,23 @@ public class Troop : MonoBehaviour
     [SerializeField] protected float waypointArrivalDistance = 0.1f; //how close troop needs to be to reach waypoint
     protected int currentWaypointIndex; //setting up waypoint index for traversal between one point and the next
 
+    [Header("Audio")]
+    [SerializeField] protected AudioClip attackSound;
+    [SerializeField] protected AudioClip deathSound;
+    [SerializeField] protected AudioClip hurtSound;
+    [SerializeField] protected AudioClip spawnSound;
+    [Range(0f, 1f)]
+    [SerializeField] protected float soundVolume = 0.7f;
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody>(); //get rigidbody on troop root
         currentHealth = maxHealth; //start troop at full hp
         lastTimeAttacked = -attackCooldown; //allows units with high cd atk to attack immediately on first atk
+
+        // Play spawn sound at the object's position if a clip is assigned
+        if (spawnSound != null)
+        AudioSource.PlayClipAtPoint(spawnSound, transform.position, soundVolume);
     }
 
     protected virtual void Update()
@@ -222,6 +236,9 @@ public class Troop : MonoBehaviour
     {
         lastTimeAttacked = Time.time; //update last attack time
         Debug.Log(gameObject.name + " attacked " + currentEnemy.gameObject.name);
+
+        if (attackSound != null)
+        AudioSource.PlayClipAtPoint(attackSound, transform.position, soundVolume);
     }
 
     protected bool CanAttack()
@@ -263,6 +280,10 @@ public class Troop : MonoBehaviour
 
         currentHealth -= damage; //reduce health by damage taken
 
+        // Play hurt sound at the object's position if a clip is assigned
+        if (hurtSound != null)
+    AudioSource.PlayClipAtPoint(hurtSound, transform.position, soundVolume);
+
         if (currentHealth <= 0)
         {
             Die();
@@ -299,7 +320,9 @@ public class Troop : MonoBehaviour
     }
 
     protected virtual void Die()
-    {
+    {   // Play death sound at the object's position if a clip is assigned
+        if (deathSound != null)
+            AudioSource.PlayClipAtPoint(deathSound, transform.position, soundVolume);
         Destroy(gameObject); //destroy troop when hp hits 0, clean up heh
     }
 

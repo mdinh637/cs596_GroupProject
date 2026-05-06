@@ -1,2 +1,16 @@
 fileFormatVersion: 2
 guid: 313c1b1fda84fa546af50c6ba34db530
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - targetCollider: {instanceID: 0}
+  - attackSound: {fileID: 8300000, guid: a0010a1a0c474473b81729eb770c485f, type: 3}
+  - deathSound: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
+  - hurtSound: {fileID: 8300000, guid: 724131bc8a7f34041bb9f1701f0cb58d, type: 3}
+  - spawnSound: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

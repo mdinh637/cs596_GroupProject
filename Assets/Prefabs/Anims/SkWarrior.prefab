@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1977643849309610333}
+  - component: {fileID: 1821738756738608655}
+  - component: {fileID: -1608044136254983939}
   m_Layer: 0
   m_Name: SkWarrior
   m_TagString: Untagged
@@ -33,6 +35,64 @@ Transform:
   - {fileID: 1612783031408844206}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1821738756738608655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2544376619175116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 313c1b1fda84fa546af50c6ba34db530, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Troop
+  maxHealth: 10
+  currentHealth: 0
+  moveSpeed: 10
+  sightRange: 30
+  attackRange: 15
+  attackCooldown: 1
+  lavaFlashDuration: 0.5
+  lavaFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  isHeavy: 0
+  isRanged: 0
+  isTargetable: 1
+  knockbackRecoverTime: 0.5
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 0
+  targetCollider: {fileID: -1608044136254983939}
+  waypoints: []
+  waypointArrivalDistance: 0.1
+  attackSound: {fileID: 8300000, guid: a0010a1a0c474473b81729eb770c485f, type: 3}
+  deathSound: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
+  hurtSound: {fileID: 8300000, guid: 724131bc8a7f34041bb9f1701f0cb58d, type: 3}
+  spawnSound: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
+  soundVolume: 0.7
+--- !u!136 &-1608044136254983939
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2544376619175116}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1.8
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1316310881168621229
 GameObject:
   m_ObjectHideFlags: 0
