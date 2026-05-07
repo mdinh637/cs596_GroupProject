@@ -10,11 +10,12 @@ using TMPro;
 public class MainMenu : MonoBehaviour
 {
     [Header("Scene Names")]
-    [SerializeField] private string gameSceneName = "TowerTestingScene";
+    [SerializeField] private string gameSceneName = "MainLevel";
+    [SerializeField] private string secondarySceneName = "Barracks";
 
     [Header("Buttons")]
     [SerializeField] private Button playButton;
-    [SerializeField] private Button quitButton;
+    [SerializeField] private Button secondaryButton;
 
     [Header("UI (optional)")]
     [SerializeField] private TMP_Text titleText;
@@ -22,31 +23,29 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
-        //make sure time is running normally in the main menu
+        // make sure time is running normally in the main menu
         Time.timeScale = 1f;
 
         if (playButton != null)
             playButton.onClick.AddListener(StartGame);
 
-        if (quitButton != null)
-            quitButton.onClick.AddListener(QuitGame);
+        if (secondaryButton != null)
+            secondaryButton.onClick.AddListener(LoadSecondaryScene);
 
         if (versionText != null)
             versionText.text = "v" + Application.version;
     }
 
-    private void StartGame()
+    public void StartGame()
     {
-        //set flag so GameStarter knows to unpause immediately
+        // set flag so GameStarter knows to unpause immediately
         GameStarter.startedFromMenu = true;
         SceneManager.LoadScene(gameSceneName);
     }
 
-    private void QuitGame()
+    public void LoadSecondaryScene()
     {
-        Application.Quit();
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
+        // load the other scene (e.g., Barracks)
+        SceneManager.LoadScene(secondarySceneName);
     }
 }
