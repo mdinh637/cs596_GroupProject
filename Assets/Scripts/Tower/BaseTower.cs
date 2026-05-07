@@ -17,6 +17,6 @@ public class BaseTower : Troop
     protected override void Die()
     {
         Debug.Log(gameObject.name + " base destroyed");
-        Destroy(gameObject); //placeholder until we get proper win/loss UI setup
+        Destroy(gameObject); //GameEndChecker detects the null reference and triggers win/lose
     }
 }

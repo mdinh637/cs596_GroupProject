@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4068578263664640896}
   - component: {fileID: 3406543690732888198}
   - component: {fileID: 3383442334842337277}
+  - component: {fileID: -1706702878690519271}
+  - component: {fileID: -3142863912182152870}
   m_Layer: 9
   m_Name: berserk_skeleton
   m_TagString: Untagged
@@ -124,6 +126,30 @@ MonoBehaviour:
   animator: {fileID: 1513624934336295164}
   attackTrigger: Attack
   movingBool: Moving
+--- !u!114 &-1706702878690519271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42872462691134940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffbcf2930610ec349bb7d3174aedc68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDeathReporter
+--- !u!114 &-3142863912182152870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42872462691134940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed0128dbed02fe54faebbfbada3376e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TroopWaypointInjector
 --- !u!1 &423624552723216295
 GameObject:
   m_ObjectHideFlags: 0

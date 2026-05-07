@@ -23,6 +23,8 @@ public class Troop : MonoBehaviour
     [SerializeField] protected bool isHeavy = false; //whether troop resists knockback, exclusive trait for tanks
     [SerializeField] protected bool isRanged = false; //whether troop is ranged type
     [SerializeField] protected bool isTargetable = true; //whether enemies can target this troop
+    public float GetCurrentHealth() => currentHealth;
+    public float GetMaxHealth() => maxHealth;
 
     [SerializeField] protected float knockbackRecoverTime = 0.5f; //time delay before resuming movement, fixes weird head stack glitch
     protected bool isKnockedBack; //whether troop is currently knocked back

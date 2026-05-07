@@ -256,6 +256,8 @@ GameObject:
   - component: {fileID: 2330948943251666059}
   - component: {fileID: 2411200917555616231}
   - component: {fileID: 8449561383687380800}
+  - component: {fileID: 450168002491615702}
+  - component: {fileID: -1768254187468583989}
   m_Layer: 9
   m_Name: boss_skeleton
   m_TagString: Untagged
@@ -368,6 +370,30 @@ MonoBehaviour:
   animator: {fileID: 6881510544763046516}
   attackTrigger: Attack
   movingBool: Moving
+--- !u!114 &450168002491615702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558013030721484352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed0128dbed02fe54faebbfbada3376e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TroopWaypointInjector
+--- !u!114 &-1768254187468583989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558013030721484352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffbcf2930610ec349bb7d3174aedc68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDeathReporter
 --- !u!1 &1583026825266190450
 GameObject:
   m_ObjectHideFlags: 0
