@@ -1,8 +1,9 @@
 using UnityEngine;
 
 /// Passive enemy tower that periodically spawns enemy units down the lane.
+/// Now extends Troop so ally units can detect and target it as a valid enemy.
 /// Supports multiple enemy types with individual spawn weights and spawn counts.
-public class EnemyTower : MonoBehaviour
+public class EnemyTower : Troop
 {
     [System.Serializable]
     public class EnemySpawnEntry
@@ -14,10 +15,6 @@ public class EnemyTower : MonoBehaviour
         public int spawnCount = 1;          //how many to spawn at once
         public float spawnSpread = 1.5f;    //random position offset between grouped units
     }
-
-    [Header("Health")]
-    [SerializeField] private float maxHealth = 500f;
-    private float currentHealth;
 
     [Header("Spawning")]
     [SerializeField] private EnemySpawnEntry[] enemyTypes;
@@ -36,21 +33,35 @@ public class EnemyTower : MonoBehaviour
 
     private bool isTowerDestroyed = false;
 
+    protected override void Awake()
+    {
+        base.Awake(); //initialize Troop base (health, rb, etc.)
+        maxHealth = 500f; //set tower health via Troop field
+        currentHealth = maxHealth;
+    }
+
     private void Start()
     {
-        currentHealth = maxHealth;
         spawnTimer = spawnInterval;
 
         if (healthUI != null)
             healthUI.Hide();
     }
 
-    private void Update()
+    protected override void Update()
     {
+        //override Troop.Update() to skip targeting/attack logic
+        //only handle spawning for EnemyTower
         if (isTowerDestroyed)
             return;
 
         HandleSpawnTimer();
+    }
+
+    protected override void FixedUpdate()
+    {
+        //override Troop.FixedUpdate() to skip movement logic
+        //towers don't move
     }
 
     private void HandleSpawnTimer()
@@ -131,7 +142,7 @@ public class EnemyTower : MonoBehaviour
         activeEnemyCount = Mathf.Max(0, activeEnemyCount - 1);
     }
 
-    public void TakeDamage(float amount)
+    public override void TakeDamage(float amount)
     {
         if (isTowerDestroyed)
             return;
@@ -148,6 +159,11 @@ public class EnemyTower : MonoBehaviour
             HandleTowerDestroyed();
     }
 
+    protected override void Attack()
+    {
+        //override to do nothing—towers don't attack
+    }
+
     private void HandleTowerDestroyed()
     {
         isTowerDestroyed = true;
@@ -162,8 +178,6 @@ public class EnemyTower : MonoBehaviour
             GameUI.Instance.DamageEnemyBase(maxHealth);
     }
 
-    public float GetCurrentHealth() => currentHealth;
-    public float GetMaxHealth() => maxHealth;
     public bool IsDestroyed() => isTowerDestroyed;
 
 #if UNITY_EDITOR
