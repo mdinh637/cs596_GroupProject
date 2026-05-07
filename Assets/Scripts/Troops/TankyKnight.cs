@@ -12,6 +12,13 @@ public class TankyKnight : Troop
     [SerializeField] private string attackTrigger = "Attack"; //trigger in tanky knight anim
     [SerializeField] private string movingBool = "Moving"; //bool for movement anim
 
+    [Header("Sound Effects")]
+    [SerializeField] private AudioSource audioSource; //audio source attached to tank
+    [SerializeField] private AudioClip attackSFX; //heavy atk swing sound
+    [SerializeField] private AudioClip walkSFX; //heavy armor footsteps
+
+    private bool isPlayingWalkSFX; //prevents walk audio from constantly restarting every frame
+
     protected override void Update()
     {
         //call base update (handles movement, targeting, atking)
@@ -24,10 +31,12 @@ public class TankyKnight : Troop
         if (currentEnemy != null && Vector3.Distance(transform.position, currentEnemy.transform.position) <= attackRange)
         {
             animator.SetBool(movingBool, false); //idle while attacking
+            StopWalkingSFX(); //stop footsteps while attacking or standing still
         }
         else
         {
             animator.SetBool(movingBool, true); //walking when moving
+            PlayWalkingSFX(); //play looping heavy footsteps while moving
         }
     }
 
@@ -38,6 +47,11 @@ public class TankyKnight : Troop
         if (animator != null)
         {
             animator.SetTrigger(attackTrigger); //play atk animation
+        }
+
+        if (audioSource != null && attackSFX != null)
+        {
+            audioSource.PlayOneShot(attackSFX); //play heavy sword swing sound
         }
 
         if (currentEnemy == null)
@@ -64,5 +78,28 @@ public class TankyKnight : Troop
                 }
             }
         }
+    }
+
+    private void PlayWalkingSFX()
+    {
+        //don't replay footsteps if already playing or missing audio setup
+        if (audioSource == null || walkSFX == null || isPlayingWalkSFX)
+            return;
+
+        audioSource.clip = walkSFX; //set current audio clip to heavy footsteps
+        audioSource.loop = true; //keep footsteps looping while moving
+        audioSource.Play(); //start playing footsteps
+
+        isPlayingWalkSFX = true; //track that footsteps are currently playing
+    }
+
+    private void StopWalkingSFX()
+    {
+        //stop if audio source missing or footsteps already stopped
+        if (audioSource == null || isPlayingWalkSFX == false)
+            return;
+
+        audioSource.Stop(); //stop looping footsteps
+        isPlayingWalkSFX = false; //track that footsteps are no longer playing
     }
 }

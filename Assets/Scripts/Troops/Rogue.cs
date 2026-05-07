@@ -18,12 +18,20 @@ public class Rogue : Troop
     [SerializeField] private string dashTrigger = "Dash"; //dash/jump trigger in rogue anim
     [SerializeField] private string movingBool = "Moving"; //bool for movement anim
 
+    [Header("Sound Effects")]
+    [SerializeField] private AudioSource audioSource; //audio source attached to rogue
+    [SerializeField] private AudioClip attackSFX; //normal atk sound
+    [SerializeField] private AudioClip critAttackSFX; //crit atk sound
+    [SerializeField] private AudioClip dashSFX; //dash/jump sound
+    [SerializeField] private AudioClip walkSFX; //looping rogue footsteps
+
     [Header("Visuals")]
     [SerializeField] private float transparentAlpha = 0.5f; //transparent effect for untargetable state
 
     private bool isDashing; //whether rogue is currently dashing
     private bool hasDashCrit; //whether next atk should crit
     private bool isRecoveringFromCrit; //whether rogue is waiting after crit
+    private bool isPlayingWalkSFX; //prevents walk audio from constantly restarting every frame
 
     private Renderer[] renderers; //all renderers on rogue
     private Color[] originalColors; //store original colors
@@ -59,6 +67,7 @@ public class Rogue : Troop
             if (animator != null)
                 animator.SetBool(movingBool, false); //idle during crit recovery
 
+            StopWalkingSFX(); //stop footsteps during crit recovery
             return; //skip base update so rogue cannot atk during crit pause
         }
 
@@ -86,10 +95,12 @@ public class Rogue : Troop
         if (currentEnemy != null && Vector3.Distance(transform.position, currentEnemy.transform.position) <= attackRange)
         {
             animator.SetBool(movingBool, false); //idle while attacking
+            StopWalkingSFX(); //stop footsteps while attacking
         }
         else
         {
             animator.SetBool(movingBool, true); //walking when moving
+            PlayWalkingSFX(); //play rogue footsteps while moving
         }
     }
 
@@ -113,6 +124,11 @@ public class Rogue : Troop
         if (animator != null)
         {
             animator.SetTrigger(dashTrigger); //play dash/jump animation
+        }
+
+        if (audioSource != null && dashSFX != null)
+        {
+            audioSource.PlayOneShot(dashSFX); //play dash/jump sound
         }
 
         Vector3 behindPosition = currentEnemy.transform.position - currentEnemy.transform.forward * behindTargetDistance; //point behind enemy
@@ -154,6 +170,11 @@ public class Rogue : Troop
                 animator.SetTrigger(critAttackTrigger); //play crit atk animation
             }
 
+            if (audioSource != null && critAttackSFX != null)
+            {
+                audioSource.PlayOneShot(critAttackSFX); //play crit atk sound
+            }
+
             currentEnemy.TakeDamage(critDamage); //deal crit dmg after dash
             hasDashCrit = false; //crit only happens once after dash
             StartCoroutine(CritRecover()); //pause before regular atks
@@ -165,8 +186,36 @@ public class Rogue : Troop
                 animator.SetTrigger(attackTrigger); //play normal atk animation
             }
 
+            if (audioSource != null && attackSFX != null)
+            {
+                audioSource.PlayOneShot(attackSFX); //play normal atk sound
+            }
+
             currentEnemy.TakeDamage(damage); //deal normal dmg
         }
+    }
+
+    private void PlayWalkingSFX()
+    {
+        //don't replay footsteps if already playing or missing audio setup
+        if (audioSource == null || walkSFX == null || isPlayingWalkSFX)
+            return;
+
+        audioSource.clip = walkSFX; //set current audio clip to rogue footsteps
+        audioSource.loop = true; //keep footsteps looping while moving
+        audioSource.Play(); //start playing footsteps
+
+        isPlayingWalkSFX = true; //track that footsteps are currently playing
+    }
+
+    private void StopWalkingSFX()
+    {
+        //stop if audio source missing or footsteps already stopped
+        if (audioSource == null || isPlayingWalkSFX == false)
+            return;
+
+        audioSource.Stop(); //stop looping footsteps
+        isPlayingWalkSFX = false; //track that footsteps are no longer playing
     }
 
     private void SetTransparency(bool transparent)

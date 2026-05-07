@@ -15,8 +15,16 @@ public class Barbarian : Troop
     [SerializeField] private string movingBool = "Moving"; //bool for movement anim
     [SerializeField] private string upgradedBool = "Upgraded"; //bool for upgraded run anim
 
+    [Header("Sound Effects")]
+    [SerializeField] private AudioSource audioSource; //audio source attached to barbarian
+    [SerializeField] private AudioClip attackSFX; //normal atk sound
+    [SerializeField] private AudioClip upgradedAttackSFX; //upgraded aoe atk sound
+    [SerializeField] private AudioClip walkSFX; //normal barbarian footsteps
+    [SerializeField] private AudioClip runSFX; //upgraded barbarian running footsteps
+
     private bool isUpgraded; //whether barbarian has upgraded
     private float originalMoveSpeed; //starting move spd before upgrade
+    private bool isPlayingMovementSFX; //prevents movement audio from constantly restarting every frame
 
     protected override void Awake()
     {
@@ -42,10 +50,12 @@ public class Barbarian : Troop
         if (currentEnemy != null && Vector3.Distance(transform.position, currentEnemy.transform.position) <= attackRange)
         {
             animator.SetBool(movingBool, false); //idle while attacking
+            StopMovementSFX(); //stop movement sounds while attacking
         }
         else
         {
             animator.SetBool(movingBool, true); //walk/run when moving
+            PlayMovementSFX(); //play movement sounds while moving
         }
     }
 
@@ -56,6 +66,9 @@ public class Barbarian : Troop
 
         isUpgraded = true; //turn on upgraded state
         moveSpeed = originalMoveSpeed * upgradedMoveSpeedMultiplier; //boost move spd
+
+        //switch from walking footsteps to upgraded running footsteps
+        StopMovementSFX();
 
         if (animator != null)
         {
@@ -77,6 +90,11 @@ public class Barbarian : Troop
                 animator.SetTrigger(upgradedAttackTrigger); //play upgraded aoe atk anim
             }
 
+            if (audioSource != null && upgradedAttackSFX != null)
+            {
+                audioSource.PlayOneShot(upgradedAttackSFX); //play upgraded aoe atk sound
+            }
+
             UpgradedAttack(); //deal aoe dmg after upgrade
         }
         else
@@ -84,6 +102,11 @@ public class Barbarian : Troop
             if (animator != null)
             {
                 animator.SetTrigger(attackTrigger); //play normal atk anim
+            }
+
+            if (audioSource != null && attackSFX != null)
+            {
+                audioSource.PlayOneShot(attackSFX); //play normal atk sound
             }
 
             currentEnemy.TakeDamage(damage); //deal dmg to current enemy
@@ -103,6 +126,31 @@ public class Barbarian : Troop
 
             enemyTroop.TakeDamage(damage); //deal aoe dmg to enemy troop
         }
+    }
+
+    private void PlayMovementSFX()
+    {
+        AudioClip currentMovementClip = isUpgraded ? runSFX : walkSFX; //swap between walk and run sounds
+
+        //don't replay movement sounds if already playing or missing audio setup
+        if (audioSource == null || currentMovementClip == null || isPlayingMovementSFX)
+            return;
+
+        audioSource.clip = currentMovementClip; //set current movement sound
+        audioSource.loop = true; //keep movement sounds looping while moving
+        audioSource.Play(); //start playing movement sound
+
+        isPlayingMovementSFX = true; //track that movement sounds are currently playing
+    }
+
+    private void StopMovementSFX()
+    {
+        //stop if audio source missing or movement sounds already stopped
+        if (audioSource == null || isPlayingMovementSFX == false)
+            return;
+
+        audioSource.Stop(); //stop looping movement sounds
+        isPlayingMovementSFX = false; //track that movement sounds are no longer playing
     }
 
     protected override void OnDrawGizmos()
