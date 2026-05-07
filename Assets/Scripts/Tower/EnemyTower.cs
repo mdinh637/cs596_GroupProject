@@ -36,8 +36,8 @@ public class EnemyTower : Troop
     protected override void Awake()
     {
         base.Awake(); //initialize Troop base (health, rb, etc.)
-        maxHealth = 500f; //set tower health via Troop field
-        currentHealth = maxHealth;
+        maxHealth = 50f; //set tower health via Troop field
+        currentHealth = 50f;
     }
 
     private void Start()
@@ -174,8 +174,8 @@ public class EnemyTower : Troop
 
         if (winLoseScreen != null)
             winLoseScreen.ShowWin();
-        else if (GameUI.Instance != null)
-            GameUI.Instance.DamageEnemyBase(maxHealth);
+        /*else if (GameUI.Instance != null)
+            GameUI.Instance.DamageEnemyBase(maxHealth);*/
     }
 
     public bool IsDestroyed() => isTowerDestroyed;

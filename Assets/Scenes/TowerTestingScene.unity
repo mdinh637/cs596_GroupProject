@@ -1520,12 +1520,29 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 147235749}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c63c1c3482052dc4aace6c58533a3c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTower
   maxHealth: 50
+  currentHealth: 0
+  moveSpeed: 10
+  sightRange: 30
+  attackRange: 15
+  attackCooldown: 1
+  lavaFlashDuration: 0.5
+  lavaFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  isHeavy: 0
+  isRanged: 0
+  isTargetable: 1
+  knockbackRecoverTime: 0.5
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 0
+  targetCollider: {fileID: 147235751}
+  waypoints: []
+  waypointArrivalDistance: 0.1
   enemyTypes:
   - prefab: {fileID: 1513123627857958452, guid: 4d181b223d7be1b41bbc86eb140f4901, type: 3}
     weight: 7
@@ -1574,7 +1591,7 @@ MonoBehaviour:
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 256
-  targetCollider: {fileID: 0}
+  targetCollider: {fileID: 147235751}
   waypoints: []
   waypointArrivalDistance: 0.1
 --- !u!114 &147235754
@@ -10538,7 +10555,6 @@ MonoBehaviour:
   allyWaypoints:
   - {fileID: 1052173038}
   - {fileID: 1490657015}
-  placementIndicator: {fileID: 1969698349099067288}
   troopContainer: {fileID: 0}
 --- !u!1001 &1372048337
 PrefabInstance:
@@ -12118,7 +12134,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -25.000042}
+  m_AnchoredPosition: {x: 0, y: -25}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1567140600
@@ -12176,7 +12192,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1570774722
 RectTransform:
   m_ObjectHideFlags: 0

@@ -219,9 +219,7 @@ public class Troop : MonoBehaviour
 
         currentEnemy = null; //no target found
 
-        // TEMP DEBUG: Warn if no enemies found in sight range, helps catch layer mask and layering issues during testing
-        if (enemiesAround.Length == 0)
-            Debug.LogWarning($"{gameObject.name}: No enemies found. Check 'whatIsEnemy' layer mask and layering.");
+
     }
 
     protected virtual void Attack()
