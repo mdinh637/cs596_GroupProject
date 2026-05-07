@@ -1,13 +1,11 @@
 using UnityEngine;
 
-/// <summary>
 /// Master UI manager for Battle Knights.
 /// Holds references to all major UI systems and acts as the
 /// single point of contact for game-state changes that affect the UI.
 ///
 /// Attach to a persistent manager GameObject in the scene.
 /// Wire up all references in the Inspector.
-/// </summary>
 public class GameUI : MonoBehaviour
 {
     // -------------------------------------------------------------------------
@@ -45,9 +43,7 @@ public class GameUI : MonoBehaviour
     // Public API — call these from gameplay scripts
     // -------------------------------------------------------------------------
 
-    /// <summary>
     /// Call from allied unit or projectile when the enemy base takes a hit.
-    /// </summary>
     public void DamageEnemyBase(float amount)
     {
         if (enemyBaseHealthBar == null) return;
@@ -58,9 +54,7 @@ public class GameUI : MonoBehaviour
             winLoseScreen?.ShowWin();
     }
 
-    /// <summary>
     /// Call from enemy unit when the player base takes a hit.
-    /// </summary>
     public void DamagePlayerBase(float amount)
     {
         if (playerBaseHealthBar == null) return;
@@ -71,9 +65,7 @@ public class GameUI : MonoBehaviour
             winLoseScreen?.ShowLose();
     }
 
-    /// <summary>
     /// Adds currency — call when an enemy unit is defeated.
-    /// </summary>
     public void AwardCurrency(float amount)
     {
         currencyManager?.AddCurrency(amount);

@@ -2,11 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-/// <summary>
 /// Manages the player's currency.
 /// Passively generates currency over time and handles spending.
 /// Attach to a persistent manager GameObject in the scene.
-/// </summary>
 public class CurrencyManager : MonoBehaviour
 {
     // -------------------------------------------------------------------------
@@ -46,9 +44,8 @@ public class CurrencyManager : MonoBehaviour
     // Public API
     // -------------------------------------------------------------------------
 
-    /// <summary>
+
     /// Returns true and deducts cost if the player can afford it.
-    /// </summary>
     public bool TrySpend(float cost)
     {
         if (currentCurrency < cost)
@@ -59,9 +56,7 @@ public class CurrencyManager : MonoBehaviour
         return true;
     }
 
-    /// <summary>
     /// Adds currency — call this when an enemy unit is defeated.
-    /// </summary>
     public void AddCurrency(float amount)
     {
         currentCurrency = Mathf.Min(currentCurrency + amount, maxCurrency);

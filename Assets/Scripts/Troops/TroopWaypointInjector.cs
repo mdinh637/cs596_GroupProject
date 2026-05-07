@@ -1,22 +1,18 @@
 using UnityEngine;
 using System.Reflection;
 
-/// <summary>
 /// Attached at runtime by EnemyTower (and optionally TroopDeploymentPanel)
 /// to inject scene-object waypoints into a Troop-derived component.
 ///
 /// Uses reflection to write to Troop's protected "waypoints" field so that
 /// Troop.cs does not need to be modified at all.
-/// </summary>
 [DisallowMultipleComponent]
 public class TroopWaypointInjector : MonoBehaviour
 {
     private bool injected = false;
 
-    /// <summary>
     /// Call immediately after adding this component.
     /// Writes the waypoints array into the Troop base class via reflection.
-    /// </summary>
     public void Inject(Transform[] waypoints)
     {
         if (injected) return;

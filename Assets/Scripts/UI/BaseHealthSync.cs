@@ -1,11 +1,9 @@
 using UnityEngine;
 
-/// <summary>
 /// Syncs a BaseTower's current health to a WorldSpaceHealthBar every frame.
 /// Attach to the same GameObject as BaseTower, or wire both references manually.
 /// This bridges the gap between Troop's internal health tracking and the UI bar
 /// without modifying Troop.cs.
-/// </summary>
 public class BaseHealthSync : MonoBehaviour
 {
     [SerializeField] private Troop troop;                       // the BaseTower (which is a Troop)

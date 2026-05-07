@@ -4,11 +4,6 @@ using TMPro;
 
 /// Represents a single troop card in the bottom deployment panel.
 /// Handles cost display, cooldown fill overlay, and affordability greying.
-/// Now includes a TroopType field that tells TroopPlacer which placement
-/// zone to activate when this card is selected:
-///   Heavy   → Front zone  (TankyKnight, Barbarian)
-///   Default → Middle zone (BasicKnight, Rogue)
-///   Ranged  → Back zone   (Archer)
 /// Attach to each card GameObject inside the deployment panel.
 public class TroopCard : MonoBehaviour
 {
@@ -23,6 +18,7 @@ public class TroopCard : MonoBehaviour
     [SerializeField] private float troopCost = 3f;          //currency cost to deploy
     [SerializeField] private float deployCooldown = 2f;     //seconds before this card can be used again
     [SerializeField] private Sprite troopIcon;              //icon shown on the card
+    [SerializeField] private string troopName = "";         //display name shown on the card label
 
     [Header("UI References")]
     [SerializeField] private Image iconImage;               //main card icon
@@ -48,8 +44,14 @@ public class TroopCard : MonoBehaviour
         if (iconImage != null && troopIcon != null)
             iconImage.sprite = troopIcon;
 
+        // show name and cost together if a name is provided, otherwise just the cost number
         if (costText != null)
-            costText.text = troopCost.ToString("0");
+        {
+            if (!string.IsNullOrEmpty(troopName))
+                costText.text = troopName + "\n" + troopCost.ToString("0") + "g";
+            else
+                costText.text = troopCost.ToString("0") + "g";
+        }
 
         if (cooldownOverlay != null)
             cooldownOverlay.fillAmount = 0f;
@@ -73,15 +75,12 @@ public class TroopCard : MonoBehaviour
         if (onCooldown) return;
         if (currencyManager == null) return;
 
-        //deduct currency immediately on click
         if (!currencyManager.TrySpend(troopCost)) return;
 
-        //tell the panel which prefab to place, which card this is, and which zone to use
         deploymentPanel?.SelectTroop(troopPrefab, this);
     }
 
     /// Returns which placement zone this card's troop type maps to.
-    /// Called by TroopDeploymentPanel to tell TroopPlacer which zone to activate.
     public TroopPlacer.PlacementZone GetPlacementZone()
     {
         return troopType switch
@@ -93,7 +92,6 @@ public class TroopCard : MonoBehaviour
     }
 
     /// Called by TroopDeploymentPanel after a troop is successfully placed.
-    /// Starts the cooldown for this card.
     public void NotifyPlaced()
     {
         onCooldown = true;

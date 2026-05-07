@@ -1,60 +1,40 @@
 using UnityEngine;
 
-/// <summary>
 /// Passive enemy tower that periodically spawns enemy units down the lane.
-/// Supports multiple enemy types with individual spawn weights.
-/// The higher the weight relative to other entries, the more frequently
-/// that unit type will be chosen.
-/// </summary>
+/// Supports multiple enemy types with individual spawn weights and spawn counts.
 public class EnemyTower : MonoBehaviour
 {
-    // -------------------------------------------------------------------------
-    // Spawn entry — one per enemy type
-    // -------------------------------------------------------------------------
     [System.Serializable]
     public class EnemySpawnEntry
     {
-        public GameObject prefab;           // enemy prefab to spawn
+        public GameObject prefab;           //enemy prefab to spawn
         [Range(0f, 10f)]
-        public float weight = 1f;           // relative spawn chance (higher = more frequent)
+        public float weight = 1f;           //relative spawn chance
+        [Range(1, 10)]
+        public int spawnCount = 1;          //how many to spawn at once
+        public float spawnSpread = 1.5f;    //random position offset between grouped units
     }
 
-    // -------------------------------------------------------------------------
-    // Health
-    // -------------------------------------------------------------------------
     [Header("Health")]
     [SerializeField] private float maxHealth = 500f;
     private float currentHealth;
 
-    // -------------------------------------------------------------------------
-    // Spawning
-    // -------------------------------------------------------------------------
     [Header("Spawning")]
-    [SerializeField] private EnemySpawnEntry[] enemyTypes;  // add one entry per enemy type
+    [SerializeField] private EnemySpawnEntry[] enemyTypes;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float spawnInterval = 15f;
     [SerializeField] private int maxActiveEnemies = 10;
     private float spawnTimer;
     private int activeEnemyCount;
 
-    // -------------------------------------------------------------------------
-    // Waypoints
-    // -------------------------------------------------------------------------
     [Header("Lane Waypoints")]
     [SerializeField] private Transform[] laneWaypoints;
 
-    // -------------------------------------------------------------------------
-    // References
-    // -------------------------------------------------------------------------
     [Header("References")]
     [SerializeField] private EnemyTowerHealthUI healthUI;
     [SerializeField] private WinLoseScreen winLoseScreen;
 
     private bool isTowerDestroyed = false;
-
-    // -------------------------------------------------------------------------
-    // Unity lifecycle
-    // -------------------------------------------------------------------------
 
     private void Start()
     {
@@ -72,10 +52,6 @@ public class EnemyTower : MonoBehaviour
 
         HandleSpawnTimer();
     }
-
-    // -------------------------------------------------------------------------
-    // Spawning
-    // -------------------------------------------------------------------------
 
     private void HandleSpawnTimer()
     {
@@ -99,30 +75,39 @@ public class EnemyTower : MonoBehaviour
         if (activeEnemyCount >= maxActiveEnemies)
             return;
 
-        GameObject selectedPrefab = GetWeightedRandomPrefab();
-        if (selectedPrefab == null)
+        EnemySpawnEntry selectedEntry = GetWeightedRandomEntry();
+        if (selectedEntry == null || selectedEntry.prefab == null)
             return;
 
-        Vector3 spawnPosition = spawnPoint != null ? spawnPoint.position : transform.position;
-        GameObject spawnedUnit = Instantiate(selectedPrefab, spawnPosition, Quaternion.identity);
-        activeEnemyCount++;
+        //spawn the full group
+        int countToSpawn = Mathf.Min(selectedEntry.spawnCount, maxActiveEnemies - activeEnemyCount);
 
-        // inject waypoints at runtime
-        TroopWaypointInjector injector = spawnedUnit.GetComponent<TroopWaypointInjector>();
-        if (injector == null)
-            injector = spawnedUnit.AddComponent<TroopWaypointInjector>();
-        injector.Inject(laneWaypoints);
+        for (int i = 0; i < countToSpawn; i++)
+        {
+            //spread units slightly so they don't all stack on the same point
+            Vector3 spawnPosition = spawnPoint != null ? spawnPoint.position : transform.position;
+            spawnPosition += new Vector3(
+                Random.Range(-selectedEntry.spawnSpread, selectedEntry.spawnSpread),
+                0f,
+                Random.Range(-selectedEntry.spawnSpread, selectedEntry.spawnSpread)
+            );
 
-        // attach death reporter
-        EnemyDeathReporter reporter = spawnedUnit.AddComponent<EnemyDeathReporter>();
-        reporter.Initialize(this);
+            GameObject spawnedUnit = Instantiate(selectedEntry.prefab, spawnPosition, Quaternion.identity);
+            activeEnemyCount++;
+
+            //inject waypoints
+            TroopWaypointInjector injector = spawnedUnit.GetComponent<TroopWaypointInjector>();
+            if (injector == null)
+                injector = spawnedUnit.AddComponent<TroopWaypointInjector>();
+            injector.Inject(laneWaypoints);
+
+            //attach death reporter
+            EnemyDeathReporter reporter = spawnedUnit.AddComponent<EnemyDeathReporter>();
+            reporter.Initialize(this);
+        }
     }
 
-    /// <summary>
-    /// Picks a random enemy prefab based on relative weights.
-    /// Higher weight = higher chance of being selected.
-    /// </summary>
-    private GameObject GetWeightedRandomPrefab()
+    private EnemySpawnEntry GetWeightedRandomEntry()
     {
         float totalWeight = 0f;
         foreach (EnemySpawnEntry entry in enemyTypes)
@@ -135,21 +120,16 @@ public class EnemyTower : MonoBehaviour
         {
             cumulative += entry.weight;
             if (roll <= cumulative)
-                return entry.prefab;
+                return entry;
         }
 
-        // fallback to first entry
-        return enemyTypes[0].prefab;
+        return enemyTypes[0];
     }
 
     public void OnEnemyUnitDied()
     {
         activeEnemyCount = Mathf.Max(0, activeEnemyCount - 1);
     }
-
-    // -------------------------------------------------------------------------
-    // Health / damage
-    // -------------------------------------------------------------------------
 
     public void TakeDamage(float amount)
     {
@@ -182,17 +162,9 @@ public class EnemyTower : MonoBehaviour
             GameUI.Instance.DamageEnemyBase(maxHealth);
     }
 
-    // -------------------------------------------------------------------------
-    // Public accessors
-    // -------------------------------------------------------------------------
-
     public float GetCurrentHealth() => currentHealth;
     public float GetMaxHealth() => maxHealth;
     public bool IsDestroyed() => isTowerDestroyed;
-
-    // -------------------------------------------------------------------------
-    // Editor helpers
-    // -------------------------------------------------------------------------
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()

@@ -2,11 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-/// <summary>
 /// A world-space health bar that floats above a base (player or enemy).
 /// Place this on a World Space Canvas parented to or positioned above the base.
 /// The bar always faces the main camera.
-/// </summary>
 public class WorldSpaceHealthBar : MonoBehaviour
 {
     // -------------------------------------------------------------------------
@@ -53,18 +51,14 @@ public class WorldSpaceHealthBar : MonoBehaviour
     // Public API
     // -------------------------------------------------------------------------
 
-    /// <summary>
     /// Deals damage to this base and updates the health bar.
-    /// </summary>
     public void TakeDamage(float amount)
     {
         currentHealth = Mathf.Max(0f, currentHealth - amount);
         RefreshUI();
     }
 
-    /// <summary>
     /// Directly sets health — useful for syncing with an external health source.
-    /// </summary>
     public void SetHealth(float current, float max)
     {
         maxHealth = max;

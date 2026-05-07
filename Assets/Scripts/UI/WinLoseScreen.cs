@@ -3,12 +3,10 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-/// <summary>
 /// Handles the win and lose screen overlay shown when the game ends.
 /// Call ShowWin() or ShowLose() from whichever script detects a base being destroyed.
 /// Attach to the root of a full-screen Canvas set to Screen Space - Overlay.
 /// Keep the GameObject inactive by default — this script activates it when needed.
-/// </summary>
 public class WinLoseScreen : MonoBehaviour
 {
     // -------------------------------------------------------------------------
@@ -47,9 +45,7 @@ public class WinLoseScreen : MonoBehaviour
     // Public API — call these from base destruction logic
     // -------------------------------------------------------------------------
 
-    /// <summary>
     /// Call this when the enemy base is destroyed (player wins).
-    /// </summary>
     public void ShowWin()
     {
         gameObject.SetActive(true);
@@ -62,9 +58,7 @@ public class WinLoseScreen : MonoBehaviour
         PauseGame();
     }
 
-    /// <summary>
     /// Call this when the player's base is destroyed (player loses).
-    /// </summary>
     public void ShowLose()
     {
         gameObject.SetActive(true);
@@ -84,6 +78,7 @@ public class WinLoseScreen : MonoBehaviour
     private void RestartScene()
     {
         Time.timeScale = 1f;
+        GameStarter.startedFromMenu = true; // add this line
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

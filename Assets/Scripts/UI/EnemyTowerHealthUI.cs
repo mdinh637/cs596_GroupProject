@@ -1,13 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
 /// Screen-space health bar for the enemy tower.
 /// Attach this to a Canvas GameObject set to Screen Space - Overlay.
 /// Wire up the Slider (and optional Text label) in the Inspector.
 /// The bar is hidden by default and only appears when the tower takes damage,
 /// then fades out automatically after a short delay.
-/// </summary>
 public class EnemyTowerHealthUI : MonoBehaviour
 {
     // -------------------------------------------------------------------------
@@ -41,10 +39,8 @@ public class EnemyTowerHealthUI : MonoBehaviour
     // Public API — called by EnemyTower
     // -------------------------------------------------------------------------
 
-    /// <summary>
     /// Reveals the health bar and refreshes it to reflect the current health value.
     /// Resets the auto-hide countdown each time this is called.
-    /// </summary>
     public void ShowAndUpdate(float current, float max)
     {
         gameObject.SetActive(true);
@@ -60,9 +56,7 @@ public class EnemyTowerHealthUI : MonoBehaviour
             healthText.text = $"{Mathf.CeilToInt(current)} / {Mathf.CeilToInt(max)}";
     }
 
-    /// <summary>
     /// Hides the health bar immediately.
-    /// </summary>
     public void Hide()
     {
         isVisible = false;
