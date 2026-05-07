@@ -75,7 +75,8 @@ public class TroopCard : MonoBehaviour
         if (onCooldown) return;
         if (currencyManager == null) return;
 
-        if (!currencyManager.TrySpend(troopCost)) return;
+        //now checks for when player can afford to purchase troop, spend the currency after valid placement and not right away on insta click
+        if (currencyManager.GetCurrentCurrency() < troopCost) return;
 
         deploymentPanel?.SelectTroop(troopPrefab, this);
     }

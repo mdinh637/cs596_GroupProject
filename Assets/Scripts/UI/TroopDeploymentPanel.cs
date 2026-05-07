@@ -21,27 +21,28 @@ public class TroopDeploymentPanel : MonoBehaviour
     [Header("Waypoints")]
     [SerializeField] private Transform[] allyWaypoints;         //lane waypoints from player side toward enemy base
 
-    [Header("Placement Indicator")]
-    [SerializeField] private GameObject placementIndicatorPrefab; //flat disc shown at cursor while placing
-
     [Header("Troop Container")]
     [SerializeField] private Transform troopContainer;            //optional parent for spawned troops, keeps Hierarchy tidy
 
     //internal state
     private GameObject selectedPrefab = null;
     private TroopCard selectedCard = null;
-    private GameObject activeIndicator = null;
 
     // -------------------------------------------------------------------------
     // Unity lifecycle
     // -------------------------------------------------------------------------
 
+    private void Start()
+    {
+        //keeps the placement preview hidden until one of the troop buttons is selected
+        if (troopPlacer != null)
+            troopPlacer.DisablePlacement();
+    }
+
     private void Update()
     {
         if (selectedPrefab == null)
             return;
-
-        UpdateIndicator();
 
         //cancel on right click
         if (Input.GetMouseButtonDown(1))
@@ -57,38 +58,6 @@ public class TroopDeploymentPanel : MonoBehaviour
                 return;
 
             TryPlaceTroop();
-        }
-    }
-
-    // -------------------------------------------------------------------------
-    // Placement indicator
-    // -------------------------------------------------------------------------
-
-    private void UpdateIndicator()
-    {
-        if (placementIndicatorPrefab == null || troopPlacer == null)
-            return;
-
-        if (activeIndicator == null)
-            activeIndicator = Instantiate(placementIndicatorPrefab);
-
-        if (troopPlacer.CanPlaceHere())
-        {
-            activeIndicator.SetActive(true);
-            activeIndicator.transform.position = troopPlacer.GetPlacementPosition();
-        }
-        else
-        {
-            activeIndicator.SetActive(false);
-        }
-    }
-
-    private void DestroyIndicator()
-    {
-        if (activeIndicator != null)
-        {
-            Destroy(activeIndicator);
-            activeIndicator = null;
         }
     }
 
@@ -112,14 +81,20 @@ public class TroopDeploymentPanel : MonoBehaviour
 
         //tell TroopPlacer which zone to restrict placement to for this troop type
         if (troopPlacer != null)
+        {
             troopPlacer.SetActiveZone(card.GetPlacementZone());
+            troopPlacer.EnablePlacement(); //turns placement preview on only after selecting a troop button
+        }
     }
 
     public void CancelSelection()
     {
         selectedPrefab = null;
         selectedCard = null;
-        DestroyIndicator();
+
+        //hides the placement preview after deselecting or placing a troop
+        if (troopPlacer != null)
+            troopPlacer.DisablePlacement();
     }
 
     // -------------------------------------------------------------------------
@@ -129,6 +104,15 @@ public class TroopDeploymentPanel : MonoBehaviour
     private void TryPlaceTroop()
     {
         if (troopPlacer == null || !troopPlacer.CanPlaceHere())
+            return;
+
+        CurrencyManager currencyManager = FindFirstObjectByType<CurrencyManager>();
+
+        //this check ensures we're only spending our currency once confirmed the placement is valid
+        if (currencyManager == null || selectedCard == null)
+            return;
+
+        if (!currencyManager.TrySpend(selectedCard.GetCost()))
             return;
 
         Vector3 placementPosition = troopPlacer.GetPlacementPosition();

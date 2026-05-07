@@ -4,9 +4,9 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// Handles mouse-based troop placement preview and position validation.
 /// Three placement zones restrict where each troop category can be placed:
-///   Front zone  — Heavy troops (TankyKnight, Barbarian) — closest to enemy
-///   Middle zone — Default troops (BasicKnight, Rogue)
-///   Back zone   — Ranged troops (Archer) — furthest from enemy, near player castle
+///   Front zone  ï¿½ Heavy troops (TankyKnight, Barbarian) ï¿½ closest to enemy
+///   Middle zone ï¿½ Default troops (BasicKnight, Rogue)
+///   Back zone   ï¿½ Ranged troops (Archer) ï¿½ furthest from enemy, near player castle
 ///
 /// TroopDeploymentPanel calls SetActiveZone() when a card is selected so
 /// the correct zone layer is raycasted against for that troop type.
@@ -16,9 +16,9 @@ public class TroopPlacer : MonoBehaviour
     public enum PlacementZone { Front, Middle, Back }
 
     [Header("Placement Zones")]
-    [SerializeField] private LayerMask frontZoneLayer;  //heavy troops — closest to enemy
-    [SerializeField] private LayerMask middleZoneLayer; //default troops — center of deployment area
-    [SerializeField] private LayerMask backZoneLayer;   //ranged troops — furthest from enemy
+    [SerializeField] private LayerMask frontZoneLayer;  //heavy troops ï¿½ closest to enemy
+    [SerializeField] private LayerMask middleZoneLayer; //default troops ï¿½ center of deployment area
+    [SerializeField] private LayerMask backZoneLayer;   //ranged troops ï¿½ furthest from enemy
 
     [Header("Preview")]
     [SerializeField] private GameObject previewObject;      //ghost object following cursor
@@ -26,10 +26,28 @@ public class TroopPlacer : MonoBehaviour
 
     private PlacementZone activeZone = PlacementZone.Middle;
     private bool canPlace = false;
+    private bool placementActive = false; //tracks whether a troop button is currently selected
     private Vector3 currentPlacementPosition;
+
+    private void Start()
+    {
+        //hide preview at the start so it only appears after selecting a troop button
+        DisablePlacement();
+    }
 
     private void Update()
     {
+        //keeps placement disabled until a troop button is selected
+        if (!placementActive)
+        {
+            canPlace = false;
+
+            if (previewObject != null)
+                previewObject.SetActive(false);
+
+            return;
+        }
+
         //do not place when clicking UI
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
         {
@@ -47,6 +65,22 @@ public class TroopPlacer : MonoBehaviour
     public void SetActiveZone(PlacementZone zone)
     {
         activeZone = zone;
+    }
+
+    //turns placement checking on when a troop button is selected
+    public void EnablePlacement()
+    {
+        placementActive = true;
+    }
+
+    //turns placement checking off after deselecting or placing a troop
+    public void DisablePlacement()
+    {
+        placementActive = false;
+        canPlace = false;
+
+        if (previewObject != null)
+            previewObject.SetActive(false);
     }
 
     private LayerMask GetActiveLayer()
