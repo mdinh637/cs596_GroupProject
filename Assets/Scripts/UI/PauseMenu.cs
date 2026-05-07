@@ -4,19 +4,23 @@ using UnityEngine.SceneManagement;
 using TMPro;
 
 /// Pause menu controller.
-/// Attach to a PausePanel GameObject inside HUDCanvas.
+/// Attach to an always-active GameObject (HUD Canvas or GameManager).
 /// Keep PausePanel inactive by default.
-/// Press Escape to toggle pause during gameplay.
+/// Press Escape or call TogglePause() to toggle pause.
 public class PauseMenu : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] private GameObject pausePanel;     //the pause menu panel
-    [SerializeField] private Button resumeButton;       //resumes the game
-    [SerializeField] private Button mainMenuButton;     //returns to main menu
-    [SerializeField] private Button quitButton;         //quits the application
+    [SerializeField] private GameObject pausePanel;     // the pause menu panel (contains Resume/MainMenu/Quit)
+    [SerializeField] private Button resumeButton;       // resumes the game
+    [SerializeField] private Button mainMenuButton;     // returns to main menu
+    [SerializeField] private Button quitButton;         // quits the application
+
+    [Header("Top-right Play/Pause Button (optional)")]
+    [Tooltip("Assign the small Pause HUD button so it can be hidden while paused.")]
+    [SerializeField] private GameObject playPauseButton;
 
     [Header("Scene Names")]
-    [SerializeField] private string mainMenuSceneName = "MainMenu";
+    [SerializeField] private string mainMenuSceneName = "BetterMainMenu";
 
     private bool isPaused = false;
 
@@ -31,45 +35,62 @@ public class PauseMenu : MonoBehaviour
         if (quitButton != null)
             quitButton.onClick.AddListener(QuitGame);
 
-        //make sure panel starts hidden
+        // make sure panel starts hidden
         if (pausePanel != null)
             pausePanel.SetActive(false);
+
+        // make sure the HUD play/pause button is visible at start (if assigned)
+        if (playPauseButton != null)
+            playPauseButton.SetActive(true);
     }
 
     private void Update()
     {
-        //only allow pausing if game is actually running
+        // only allow pausing if game is actually running
         if (Time.timeScale == 0f && !isPaused)
             return;
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPaused)
-                Resume();
-            else
-                Pause();
+            if (isPaused) Resume();
+            else Pause();
         }
     }
 
-    private void Pause()
+    // Public method for Button.OnClick to call
+    public void TogglePause()
+    {
+        if (isPaused) Resume();
+        else Pause();
+    }
+
+    public void Pause()
     {
         isPaused = true;
         Time.timeScale = 0f;
 
         if (pausePanel != null)
             pausePanel.SetActive(true);
+        else
+            Debug.LogWarning("PauseMenu: pausePanel not assigned.");
+
+        if (playPauseButton != null)
+            playPauseButton.SetActive(false);
     }
 
-    private void Resume()
+    public void Resume()
     {
         isPaused = false;
         Time.timeScale = 1f;
 
         if (pausePanel != null)
             pausePanel.SetActive(false);
+
+        if (playPauseButton != null)
+            playPauseButton.SetActive(true);
     }
 
-    private void GoToMainMenu()
+    public void GoToMainMenu()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(mainMenuSceneName);
