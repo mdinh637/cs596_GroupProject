@@ -98,6 +98,15 @@ public class Rogue : Troop
         if (currentEnemy == null || rb == null)
             return;
 
+        // ADDED: Don't dash behind stationary towers (EnemyTower has no rigidbody or isHeavy)
+        if (currentEnemy.GetComponent<Rigidbody>() == null || currentEnemy.IsHeavy())
+        {
+            // For towers, just become targetable and attack normally
+            isTargetable = true;
+            hasDashCrit = false;
+            return;
+        }
+
         isDashing = true; //prevents repeated dash checks
         hasDashCrit = true; //next atk will crit
 

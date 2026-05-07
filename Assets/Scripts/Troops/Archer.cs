@@ -43,15 +43,15 @@ public class Archer : Troop
             return;
 
         if (animator != null)
-        {
             animator.SetTrigger(attackTrigger);
-        }
 
-        //spawn arrow
-        GameObject arrowObj = Instantiate(arrowPrefab, arrowSpawnPoint.position, Quaternion.identity);
+        // ADDED: Spawn arrow above ground to prevent immediate collision
+        Vector3 spawnPos = arrowSpawnPoint.position;
+        spawnPos.y = Mathf.Max(spawnPos.y, 1f);  // Ensure minimum height
+        
+        GameObject arrowObj = Instantiate(arrowPrefab, spawnPos, Quaternion.identity);
 
         ArrowProjectile arrow = arrowObj.GetComponent<ArrowProjectile>();
-
         if (arrow != null)
         {
             arrow.SetTarget(currentEnemy, damage, arrowSpeed);
