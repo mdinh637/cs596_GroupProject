@@ -4991,8 +4991,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 886552548}
   - {fileID: 626974430}
+  - {fileID: 886552548}
   - {fileID: 1869789524}
   - {fileID: 1014933941}
   m_Father: {fileID: 229278044}
@@ -5057,7 +5057,7 @@ MonoBehaviour:
   resultText: {fileID: 0}
   restartButton: {fileID: 1869789525}
   mainMenuButton: {fileID: 1014933942}
-  mainMenuSceneName: MainMenu
+  mainMenuSceneName: BetterMainMenu
 --- !u!4 &644170682 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b7c5179cea89cc845b30de7023069c08, type: 3}

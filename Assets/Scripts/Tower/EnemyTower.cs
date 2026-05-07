@@ -29,7 +29,6 @@ public class EnemyTower : Troop
 
     [Header("References")]
     [SerializeField] private EnemyTowerHealthUI healthUI;
-    [SerializeField] private WinLoseScreen winLoseScreen;
 
     private bool isTowerDestroyed = false;
 
@@ -172,10 +171,7 @@ public class EnemyTower : Troop
         if (healthUI != null)
             healthUI.Hide();
 
-        if (winLoseScreen != null)
-            winLoseScreen.ShowWin();
-        /*else if (GameUI.Instance != null)
-            GameUI.Instance.DamageEnemyBase(maxHealth);*/
+        Destroy(gameObject); // add this — lets GameEndChecker detect the null
     }
 
     public bool IsDestroyed() => isTowerDestroyed;
