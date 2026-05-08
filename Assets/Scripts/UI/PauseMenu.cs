@@ -42,6 +42,9 @@ public class PauseMenu : MonoBehaviour
         // make sure the HUD play/pause button is visible at start (if assigned)
         if (playPauseButton != null)
             playPauseButton.SetActive(true);
+
+        //make sure audio is not stuck paused when entering the scene
+        AudioListener.pause = false;
     }
 
     private void Update()
@@ -68,6 +71,7 @@ public class PauseMenu : MonoBehaviour
     {
         isPaused = true;
         Time.timeScale = 0f;
+        AudioListener.pause = true; //pause all game audio while pause menu is open
 
         if (pausePanel != null)
             pausePanel.SetActive(true);
@@ -82,6 +86,7 @@ public class PauseMenu : MonoBehaviour
     {
         isPaused = false;
         Time.timeScale = 1f;
+        AudioListener.pause = false; //resume game audio when unpausing
 
         if (pausePanel != null)
             pausePanel.SetActive(false);
@@ -93,11 +98,14 @@ public class PauseMenu : MonoBehaviour
     public void GoToMainMenu()
     {
         Time.timeScale = 1f;
+        AudioListener.pause = false; //reset audio before changing scenes
         SceneManager.LoadScene(mainMenuSceneName);
     }
 
     private void QuitGame()
     {
+        AudioListener.pause = false; //reset audio before quitting play mode
+
         Application.Quit();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
