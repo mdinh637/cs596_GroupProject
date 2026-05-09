@@ -9,7 +9,7 @@
 | Member | Role |
 |--------|------|
 | **Husain Patanwala** | **Asset research / game concept design / projectile mechanics** / Custom shader(s) / base character animation assembly / map design |
-| **Glory Kanda** | **Handles playtesting, bug documentation, game balance feedback, and final submission materials.** |
+| **Glory Kanda** | **Handles sound effects (EFX) system, waypoints system, and final submission materials.** |
 | **Michael Dinh** | **Implementing ally troop and enemy logic, troop placement, combat system** |
 | **Alejandro Alvarado** | **Enemy tower functionality, HUD and UI** |
 
